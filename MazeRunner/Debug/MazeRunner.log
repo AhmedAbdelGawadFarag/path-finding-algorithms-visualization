@@ -1,2 +1,3 @@
-﻿  Main.cpp
+﻿  Maze.cpp
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Maze.cpp(7,22): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   MazeRunner.vcxproj -> C:\Users\Ahmed\Documents\GitHub\maze-solver\Debug\MazeRunner.exe
