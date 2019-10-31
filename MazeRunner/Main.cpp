@@ -10,7 +10,7 @@ int main() {
 
 	// Create Window
 	RenderWindow window(VideoMode(640, 400), "Maze Runner!");
-	window.setFramerateLimit(60);
+	
 	Maze maze(Vector2f(window.getSize().x, window.getSize().y), 3, Vector2i(45, 30), Color(220,100,25,10) , Color::White);
 	
 	while (window.isOpen())

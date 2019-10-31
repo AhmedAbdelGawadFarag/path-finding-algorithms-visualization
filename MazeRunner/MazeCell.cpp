@@ -2,6 +2,8 @@
 
 MazeCell::MazeCell(Vector2f position, Vector2f size, int column, int row, float wallWidth, Color backgroundColor, Color wallColor)
 {
+	DefaultColor = backgroundColor;
+
 	this->backGround.setSize(size);
 	this->backGround.setPosition(position);
 	this->backGround.setFillColor(backgroundColor);
@@ -25,14 +27,21 @@ MazeCell::~MazeCell()
 {
 }
 
-void MazeCell::draw(RenderWindow* window)
+void MazeCell::draw(RenderWindow* window,MazeCell* currentCell)
 {
+	  if (this == currentCell)
+		 this->backGround.setFillColor(Color::Magenta);
+	  else
+	   	 this->backGround.setFillColor(DefaultColor);
+
       if(this->isVisited)
 		  window->draw(this->backGround);
 	  if (this->activeWalls[East]) 
 		  window->draw(this->walls[East]);
 	  if (this->activeWalls[South])
 		  window->draw(this->walls[South]);
+	  
+
 }
 
 void MazeCell::setActiveWalls(Path dir)
@@ -54,4 +63,9 @@ int MazeCell::getColumn()
 int MazeCell::getRow()
 {
 	return this->row;
+}
+
+void MazeCell::setBGColor(Color color)
+{
+	backGround.setFillColor(color);
 }

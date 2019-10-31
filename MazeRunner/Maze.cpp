@@ -56,14 +56,15 @@ void Maze::update()
 			currentCell = stack.top();
 		}
 	}
-	// std::cout << "Stack size : " << stack.size() << "\n";
+	currentCell->setBGColor(Color::Green);
+	 std::cout << "Stack size : " << stack.size() << "\n";
 }
 
 void Maze::draw(RenderWindow* window)
 {
 	for (int y = 0; y < cellCount.y; y++)
 		for (int x = 0; x < cellCount.x; x++)
-			cells[y][x]->draw(window);
+			cells[y][x]->draw(window,currentCell);
 }
 
 MazeCell* Maze::randomCell(MazeCell* cell)

@@ -1,3 +1,20 @@
-﻿  Maze.cpp
-C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Maze.cpp(7,22): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+﻿  Main.cpp
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Main.cpp(14,57): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Main.cpp(14,57): warning C4244:         with
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Main.cpp(14,57): warning C4244:         [
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Main.cpp(14,57): warning C4244:             T=unsigned int
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Main.cpp(14,57): warning C4244:         ]
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Main.cpp(14,57): warning C4244:         and
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Main.cpp(14,57): warning C4244:         [
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Main.cpp(14,57): warning C4244:             T=float
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Main.cpp(14,57): warning C4244:         ]
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Main.cpp(14,37): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Main.cpp(14,37): warning C4244:         with
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Main.cpp(14,37): warning C4244:         [
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Main.cpp(14,37): warning C4244:             T=unsigned int
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Main.cpp(14,37): warning C4244:         ]
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Main.cpp(14,37): warning C4244:         and
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Main.cpp(14,37): warning C4244:         [
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Main.cpp(14,37): warning C4244:             T=float
+C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\Main.cpp(14,37): warning C4244:         ]
   MazeRunner.vcxproj -> C:\Users\Ahmed\Documents\GitHub\maze-solver\Debug\MazeRunner.exe
