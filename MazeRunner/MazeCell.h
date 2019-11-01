@@ -5,7 +5,7 @@ using namespace sf;
 
 enum Path
 {
-	East, South
+    North,East, South ,West
 };
 
 class MazeCell
@@ -28,8 +28,8 @@ private:
 	int row = 0;
 	Color DefaultColor;
 	RectangleShape backGround;
-	RectangleShape walls[2];
-	bool activeWalls[2]{false,false};
+	RectangleShape walls[4];
+	bool activeWalls[4]{false,false,false,false};
 	
 };
 

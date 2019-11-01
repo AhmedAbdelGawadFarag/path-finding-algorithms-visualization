@@ -41,6 +41,8 @@ MazeCell* Maze::getCell(Vector2i position)
 void Maze::update()
 {
 	currentCell->isVisited = true;
+	//for (int i = 0; i < 4; i++)
+	//	currentCell->setActiveWalls((Path)i);
 	MazeCell* temp; 
 	temp = randomCell(currentCell);
 	if (temp != nullptr) {
@@ -110,20 +112,28 @@ MazeCell* Maze::randomCell(MazeCell* cell)
 
 void Maze::removeWalls(MazeCell* current, MazeCell* next)
 {
+	// South Side
 	if (current->getRow() == next->getRow() - 1 ) {
-		next->removeWalls(South);
+		next->removeWalls(North);
+		currentCell->removeWalls(South);
 	}
+	// North Side
 	else if ( current->getRow() == next->getRow() + 1)
 	{
-		current->removeWalls(South);
+		next->removeWalls(South);
+		current->removeWalls(North);
 	}
+	// West Side
 	else if (current->getColumn() == next->getColumn() + 1)
 	{
-		current->removeWalls(East);
+		next->removeWalls(East);
+		current->removeWalls(West);
 	}
+	// East Side
 	else if (current->getColumn() == next->getColumn() - 1)
 	{
-		next->removeWalls(East);
+		next->removeWalls(West);
+		current->removeWalls(East);
 	}
 }
 

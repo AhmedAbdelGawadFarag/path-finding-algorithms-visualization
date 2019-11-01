@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?><DEFECTS><DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\</FILEPATH>
+      <FILENAME>Maze.cpp</FILENAME>
+      <LINE>5</LINE>
+      <COLUMN>6</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Maze::row' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Maze::{ctor}</FUNCTION>
+    <DECORATED>??0Maze@@QAE@V?$Vector2@M@sf@@MV?$Vector2@H@2@VColor@2@2@Z</DECORATED>
+    <FUNCLINE>5</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Maze::row</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\</FILEPATH>
+      <FILENAME>MazeCell.cpp</FILENAME>
+      <LINE>57</LINE>
+      <COLUMN>15</COLUMN>
+    </SFA>
+    <DEFECTCODE>26812</DEFECTCODE>
+    <DESCRIPTION>The enum type 'Path' is unscoped. Prefer 'enum class' over 'enum' (Enum.3).</DESCRIPTION>
+    <FUNCTION>MazeCell::setActiveWalls</FUNCTION>
+    <DECORATED>?setActiveWalls@MazeCell@@QAEXW4Path@@@Z</DECORATED>
+    <FUNCLINE>57</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT></DEFECTS>

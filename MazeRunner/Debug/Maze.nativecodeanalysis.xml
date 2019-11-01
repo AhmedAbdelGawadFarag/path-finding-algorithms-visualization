@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\</FILEPATH>
+      <FILENAME>Maze.cpp</FILENAME>
+      <LINE>5</LINE>
+      <COLUMN>6</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Maze::row' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Maze::{ctor}</FUNCTION>
+    <DECORATED>??0Maze@@QAE@V?$Vector2@M@sf@@MV?$Vector2@H@2@VColor@2@2@Z</DECORATED>
+    <FUNCLINE>5</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Maze::row</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Ahmed\Documents\GitHub\maze-solver\MazeRunner\</FILEPATH>
+      <FILENAME>Maze.cpp</FILENAME>
+      <LINE>5</LINE>
+      <COLUMN>6</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Maze::column' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Maze::{ctor}</FUNCTION>
+    <DECORATED>??0Maze@@QAE@V?$Vector2@M@sf@@MV?$Vector2@H@2@VColor@2@2@Z</DECORATED>
+    <FUNCLINE>5</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Maze::column</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

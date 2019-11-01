@@ -4,23 +4,34 @@ MazeCell::MazeCell(Vector2f position, Vector2f size, int column, int row, float 
 {
 	DefaultColor = backgroundColor;
 
+	this->row = row;
+	this->column = column;
+
 	this->backGround.setSize(size);
 	this->backGround.setPosition(position);
 	this->backGround.setFillColor(backgroundColor);
 
-	this->walls[East].setSize(Vector2f(wallWidth, size.y));
-	this->walls[East].setPosition(Vector2f(position.x + size.x , position.y));
+	this->walls[North] = RectangleShape( Vector2f(size.x, wallWidth) );
+	this->walls[North].setPosition( Vector2f(position.x, position.y) );
+	this->walls[North].setFillColor(wallColor);
+
+	this->walls[East] = RectangleShape( Vector2f(wallWidth, size.y) );
+	this->walls[East].setPosition( Vector2f(position.x + size.x - wallWidth, position.y) );
 	this->walls[East].setFillColor(wallColor);
 
-	this->walls[South].setSize(Vector2f(size.x, wallWidth));
-	this->walls[South].setPosition(Vector2f(position.x, position.y + size.y));
+	this->walls[South] = RectangleShape( Vector2f(size.x, wallWidth) );
+	this->walls[South].setPosition(Vector2f(position.x, position.y + size.y - wallWidth));
 	this->walls[South].setFillColor(wallColor);
 
+	this->walls[West] = RectangleShape( Vector2f(wallWidth, size.y) );
+	this->walls[West].setPosition( Vector2f(position.x, position.y) );
+	this->walls[West].setFillColor(wallColor);
+
+	this->setActiveWalls(North);
 	this->setActiveWalls(East);
 	this->setActiveWalls(South);
-
-	this->row = row;
-	this->column = column;
+	this->setActiveWalls(West);
+	
 }
 
 MazeCell::~MazeCell()
@@ -40,6 +51,10 @@ void MazeCell::draw(RenderWindow* window,MazeCell* currentCell)
 		  window->draw(this->walls[East]);
 	  if (this->activeWalls[South])
 		  window->draw(this->walls[South]);
+	  if (this->activeWalls[North])
+		  window->draw(this->walls[North]);
+	  if (this->activeWalls[West])
+		  window->draw(this->walls[West]);
 	  
 
 }
