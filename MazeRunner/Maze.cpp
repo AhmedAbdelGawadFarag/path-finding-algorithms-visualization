@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 
+
 Maze::Maze( Vector2f windowSize, float wallWidth, Vector2i cells, Color backgroundColor, Color wallColor)
 {
 	std::srand(std::time(0));
@@ -13,7 +14,7 @@ Maze::Maze( Vector2f windowSize, float wallWidth, Vector2i cells, Color backgrou
 	for (int y = 0; y < cellCount.y; ++y) {
 		this->cells.push_back( std::vector<MazeCell*> () );
 		for (int x = 0; x < cellCount.x; ++x)
-			this->cells[y].push_back(new MazeCell( Vector2f(x * cellSize.x, y * cellSize.y), Vector2f(cellSize.x, cellSize.y), x, y, wallWidth, backgroundColor, wallColor) );
+			this->cells[y].push_back(new MazeCell( Vector2f(x * cellSize.x , y * cellSize.y ), Vector2f(cellSize.x, cellSize.y), x, y, wallWidth, backgroundColor, wallColor) );
 	}
 	int y = std::rand() % cellCount.y;
 	int x = std::rand() % cellCount.x;

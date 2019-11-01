@@ -9,9 +9,10 @@ using namespace sf;
 int main() {
 
 	// Create Window
-	RenderWindow window(VideoMode(640, 400), "Maze Runner!");
+	RenderWindow window(VideoMode(1366, 768), "Maze Runner!",Style::Default);
+	window.setFramerateLimit(80);
 	
-	Maze maze(Vector2f(window.getSize().x, window.getSize().y), 0.5, Vector2i(45, 30), Color(220,100,25,10) , Color::White);
+	Maze maze(Vector2f(window.getSize().x , window.getSize().y ), 0.50, Vector2i(45, 30), Color::White , Color::Black);
 	
 	while (window.isOpen())
 	{
