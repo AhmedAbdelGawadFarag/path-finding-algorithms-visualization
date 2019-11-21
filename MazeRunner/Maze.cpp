@@ -42,8 +42,6 @@ MazeCell* Maze::getCell(Vector2i position)
 void Maze::update()
 {
 	currentCell->isVisited = true;
-	//for (int i = 0; i < 4; i++)
-	//	currentCell->setActiveWalls((Path)i);
 	MazeCell* temp; 
 	temp = randomCell(currentCell);
 	if (temp != nullptr) {
@@ -59,8 +57,7 @@ void Maze::update()
 			currentCell = stack.top();
 		}
 	}
-	currentCell->setBGColor(Color::Green);
-	 std::cout << "Stack size : " << stack.size() << "\n";
+
 }
 
 void Maze::draw(RenderWindow* window)

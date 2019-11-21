@@ -40,11 +40,7 @@ MazeCell::~MazeCell()
 
 void MazeCell::draw(RenderWindow* window,MazeCell* currentCell)
 {
-	  if (this == currentCell)
-		 this->backGround.setFillColor(Color::Magenta);
-	  else
-	   	 this->backGround.setFillColor(DefaultColor);
-
+	 
       if(this->isVisited)
 		  window->draw(this->backGround);
 	  if (this->activeWalls[East]) 
