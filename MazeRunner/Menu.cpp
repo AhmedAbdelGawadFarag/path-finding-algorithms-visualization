@@ -14,20 +14,20 @@ Menu::Menu(float width, float height)
 	menu[Options]->setFont(font);
 	menu[Options]->setFillColor(Color::White);
 	menu[Options]->setString("Resume");
-	menu[Options]->setPosition(Vector2f(width / 3, height / (MenuMaxElements + 1) ));
+	menu[Options]->setPosition(Vector2f( (width - 40) / 2, height / (MenuMaxElements ) ));
 
 
 	menu[Exit]->setFont(font);
 	menu[Exit]->setFillColor(Color::White);
 	menu[Exit]->setString("Options");
-	menu[Exit]->setPosition(Vector2f(width / 3, height / (MenuMaxElements + 1) * 2 ));
+	menu[Exit]->setPosition(Vector2f( (width - 40) / 2, (height / MenuMaxElements) + 85 ));
 
 
 
 	menu[2]->setFont(font);
 	menu[2]->setFillColor(Color::White);
 	menu[2]->setString("Test");
-	menu[2]->setPosition(Vector2f(width / 3, height / (MenuMaxElements + 1) * 3));
+	menu[2]->setPosition(Vector2f( (width - 17 )/ 2, (height / MenuMaxElements ) + 170 ));
 	
 
 }
