@@ -1,23 +1,37 @@
 #include <SFML\Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <iostream>
-
 #include "Menu.h"
 #include "Maze.h"
+#include"ReadMaze.h"
+#include <string>
 using namespace std;
-
+using namespace sf;
 
 int main() {
 
-	// Create Window
-	RenderWindow window(VideoMode(1366, 768), "Maze Runner!",Style::Default);
-	window.setFramerateLimit(80);
+	RenderWindow window(VideoMode(1366, 768), "Maze Runner!", Style::Default);
+
+	ReadMaze readmaze("maze2.txt", window.getSize(), 0.5, Color::Red, Color::Blue);
+	
+	while (window.isOpen()) {
+		Event event;
+		while (window.pollEvent(event)) {
+
+		}
+		window.clear();
+	   readmaze.update();
+	   readmaze.draw(&window);
+		window.display();
+	}
+
+	window.setFramerateLimit(60);
 	Menu menu(window.getSize().x, window.getSize().y);
 
-	Maze maze(sf::Vector2f(window.getSize().x , window.getSize().y ), 1.5, sf::Vector2i(45, 30), sf::Color::White , sf::Color::Black);
-	
+	Maze maze(sf::Vector2f(window.getSize().x , window.getSize().y ), 0.5, sf::Vector2i(45, 30), sf::Color::Red , sf::Color::Black);
+
 	sf::Event event;
-	while (window.isOpen())
+	/*while (window.isOpen())
 	{
 		
 		while (window.pollEvent(event))
@@ -63,7 +77,7 @@ int main() {
 		}
 		
 		window.display();
-	}
+	}*/
 
 	return 0;
 }
