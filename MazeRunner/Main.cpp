@@ -12,7 +12,7 @@ int main() {
 
 	RenderWindow window(VideoMode(1366, 768), "Maze Runner!", Style::Default);
 
-	ReadMaze readmaze("maze2.txt", window.getSize(), 0.5, Color::Red, Color::Blue);
+	ReadMaze readmaze("maze1.txt", window.getSize(), 0.5, Color::Red, Color::Blue);
 	
 	while (window.isOpen()) {
 		Event event;

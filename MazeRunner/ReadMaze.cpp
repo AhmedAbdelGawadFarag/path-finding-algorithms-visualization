@@ -4,19 +4,34 @@ ReadMaze::ReadMaze(string FileName, Vector2u WindowSize, float wallWidth, Color 
 {
 	
 	string s;
+	ifstream inputfile(FileName);
+	string w, h;
+	while (inputfile>>w>>h) {
+		cout << w << " " << h << endl;
+		break;
+	}
+	inputfile.close();
 
-	cin >> width>>height;
+
+
+	inputfile.open(FileName);
+	getline(inputfile, s);
+	width = stoi(w);
+	height = stoi(h);
 	cellnum.x = width;
 	cellnum.y = height;
+
 	
-	ifstream inputfile(FileName);
 	int cnt = 0;
+
 	while (getline(inputfile, s)) {
 		
 			MazeVector.push_back(vector<char>());
 		
-			for (int j = 0; j <s.size(); j++) 
-				MazeVector[cnt].push_back( s[ j ] );
+			for (int j = 0; j < s.size(); j++) {
+				MazeVector[cnt].push_back(s[j]);
+				cout << MazeVector[cnt][j];
+			}cout << endl;
 
 			cnt++;
 	}
