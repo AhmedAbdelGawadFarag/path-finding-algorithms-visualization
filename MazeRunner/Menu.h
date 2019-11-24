@@ -7,7 +7,7 @@ using namespace sf;
 
 enum MenuElement
 {
-	Options, Exit
+	Generate, Files,Exit
 };
 
 class Menu
@@ -21,6 +21,8 @@ public:
 	bool isOpen();
 	void open();
 	void close();
+	void update();
+	int checked();
 
 private:
 	bool currentState = false;

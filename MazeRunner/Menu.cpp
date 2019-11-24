@@ -11,23 +11,25 @@ Menu::Menu(float width, float height)
 	font.loadFromFile("arial.ttf");
 	
 	
-	menu[Options]->setFont(font);
-	menu[Options]->setFillColor(Color::White);
-	menu[Options]->setString("Resume");
-	menu[Options]->setPosition(Vector2f( (width - 40) / 2, height / (MenuMaxElements ) ));
+	menu[Generate]->setFont(font);
+	menu[Generate]->setFillColor(Color::White);
+	menu[Generate]->setString("Generate maze");
+	menu[Generate]->setPosition(Vector2f( (width - 40) / 2, height / (MenuMaxElements ) ));
 
 
 	menu[Exit]->setFont(font);
 	menu[Exit]->setFillColor(Color::White);
 	menu[Exit]->setString("Options");
-	menu[Exit]->setPosition(Vector2f( (width - 40) / 2, (height / MenuMaxElements) + 85 ));
+	menu[Exit]->setPosition(Vector2f((width - 17) / 2, (height / MenuMaxElements) + 170));
+	
 
 
+	menu[Files]->setFont(font);
+	menu[Files]->setFillColor(Color::White);
+	menu[Files]->setString("Maze From File");
+	menu[Files]->setPosition(Vector2f((width - 40) / 2, (height / MenuMaxElements) + 85));
 
-	menu[2]->setFont(font);
-	menu[2]->setFillColor(Color::White);
-	menu[2]->setString("Test");
-	menu[2]->setPosition(Vector2f( (width - 17 )/ 2, (height / MenuMaxElements ) + 170 ));
+	
 	
 
 }
@@ -47,29 +49,21 @@ void Menu::draw(RenderWindow& window)
 void Menu::moveUp()
 {
 	
-	if (currentItem == -1 || currentItem == 0)
-	{
-		menu[0]->setFillColor(Color::White);
+	currentItem--;
+	if (currentItem < 0) {
 		currentItem = MenuMaxElements - 1;
-		menu[currentItem]->setFillColor(Color::Red);
+;
 	}
-	else
-	{
-		menu[currentItem]->setFillColor(Color::White);
-		--currentItem;
-		menu[currentItem]->setFillColor(Color::Red);
-
-	}
-		
+	update();
+	
 }
 
 void Menu::moveDown()
 {
-	if (currentItem != -1)
-		menu[currentItem]->setFillColor(sf::Color::White);
-	currentItem = (currentItem + 1) % MenuMaxElements;
-	menu[currentItem]->setFillColor(Color::Red);
-
+	currentItem++;
+	if (currentItem >= MenuMaxElements)
+		currentItem = 0;
+	update();
 }
 
 bool Menu::isOpen()
@@ -85,4 +79,17 @@ void Menu::open()
 void Menu::close()
 {
 	currentState = false;
+}
+
+void Menu::update()
+{
+	for (int i = 0; i < MenuMaxElements; i++) menu[i]->setFillColor(Color::White);
+
+	menu[currentItem]->setFillColor(Color::Red);
+	
+}
+
+int Menu::checked()
+{
+	return currentItem;
 }
