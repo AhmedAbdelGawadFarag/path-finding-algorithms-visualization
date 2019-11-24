@@ -34,19 +34,18 @@ void CheckEvent(RenderWindow *window,Menu *menu) {
 				menu->moveDown();
 				break;
 			case Keyboard::Key::Enter:
-				if (menu->isOpen()) {
+				if (MenuFile) {
 					if (menu->checked() == 0) {
 						MazeGenerator = true;
 						MazeFile = false;
 						MenuFile = false;
 					}
-					else if (menu->isOpen()) {
-						if (menu->checked() == 1) {
+					else if (menu->checked() == 1) {
 							MazeGenerator = false;
 							MazeFile = true;
 							MenuFile = false;
 						}
-					}
+					
 
 				}
 
