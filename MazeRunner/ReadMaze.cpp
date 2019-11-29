@@ -30,8 +30,7 @@ ReadMaze::ReadMaze(string FileName, Vector2u WindowSize, float wallWidth, Color 
 		
 			for (int j = 0; j < s.size(); j++) {
 				MazeVector[cnt].push_back(s[j]);
-				cout << MazeVector[cnt][j];
-			}cout << endl;
+			}
 
 			cnt++;
 	}

@@ -8,8 +8,12 @@ Maze::Maze( Vector2f windowSize, float wallWidth, Vector2i cells, Color backgrou
 	std::srand(std::time(0));
 
 	this->currentCell = 0;
-	this->cellCount= cells;
-	Vector2f cellSize(windowSize.x / cells.x, windowSize.y / cells.y );
+	this->cellCount = cells;
+	this->wallWidth = wallWidth;
+	this->cellSize.x = windowSize.x / cells.x;
+	this->cellSize.y = windowSize.y / cells.y;
+	this->backGroundColor = backgroundColor;
+	this->wallColor = wallColor;
 
 	for (int y = 0; y < cellCount.y; ++y) {
 		this->cells.push_back( std::vector<MazeCell*> () );
@@ -18,16 +22,14 @@ Maze::Maze( Vector2f windowSize, float wallWidth, Vector2i cells, Color backgrou
 	}
 	int y = std::rand() % cellCount.y;
 	int x = std::rand() % cellCount.x;
-	std::cout << "Y : " << y << "\nX : " << x;
+	
 	this->currentCell = this->cells[y][x];
 	this->stack.push(this->currentCell);
 }
 
 Maze::~Maze()
 {
-	for (int y = 0; y < cellCount.y; ++y)
-		for (int x = 0; x < cellCount.x; ++x)
-			delete cells[y][x];
+	clear();
 }
 
 MazeCell* Maze::getCell(Vector2i position)
@@ -41,23 +43,25 @@ MazeCell* Maze::getCell(Vector2i position)
 
 void Maze::update()
 {
-	currentCell->isVisited = true;
-	MazeCell* temp; 
-	temp = randomCell(currentCell);
-	if (temp != nullptr) {
+	do {
 		
-		this->removeWalls(currentCell,temp);
-		currentCell = temp;
-		stack.push(currentCell);
-	}
-	else
-	{
-		if (stack.size() > 1) {
-			stack.pop();
-			currentCell = stack.top();
-		}
-	}
+		currentCell->isVisited = true;
+		MazeCell* temp;
+		temp = randomCell(currentCell);
+		if (temp != nullptr) {
 
+			this->removeWalls(currentCell, temp);
+			currentCell = temp;
+			stack.push(currentCell);
+		}
+		else
+		{
+			if (stack.size() > 1) {
+				stack.pop();
+				currentCell = stack.top();
+			}
+		}
+	} while (!animation && stack.size() != 1);
 }
 
 void Maze::draw(RenderWindow* window)
@@ -133,5 +137,40 @@ void Maze::removeWalls(MazeCell* current, MazeCell* next)
 		next->removeWalls(West);
 		current->removeWalls(East);
 	}
+}
+
+
+void Maze::clear()
+{
+	for (int y = 0; y < cellCount.y; ++y)
+		for (int x = 0; x < cellCount.x; ++x)
+			delete cells[y][x];
+
+	cells.clear();
+
+	while (stack.size() != 0)
+	{
+		stack.pop();
+	}
+}
+
+void Maze::generate(Vector2f WindowSize, Vector2i cellCount)
+{
+	clear();
+
+	this->cellCount = cellCount;
+	this->cellSize = Vector2f(WindowSize.x / cellCount.x, WindowSize.y / cellCount.y);
+
+	for (int y = 0; y < cellCount.y; ++y) {
+		this->cells.push_back(std::vector<MazeCell*>());
+		for (int x = 0; x < cellCount.x; ++x)
+			this->cells[y].push_back(new MazeCell(Vector2f(x * cellSize.x, y * cellSize.y), Vector2f(cellSize.x, cellSize.y), x, y, wallWidth, backGroundColor, wallColor));
+	}
+
+	int y = std::rand() % cellCount.y;
+	int x = std::rand() % cellCount.x;
+
+	this->currentCell = this->cells[y][x];
+	this->stack.push(this->currentCell);
 }
 

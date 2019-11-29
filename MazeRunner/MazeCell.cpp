@@ -2,7 +2,7 @@
 
 MazeCell::MazeCell(Vector2f position, Vector2f size, int column, int row, float wallWidth, Color backgroundColor, Color wallColor)
 {
-	DefaultColor = backgroundColor;
+	bgColor = backgroundColor;
 
 	this->row = row;
 	this->column = column;
@@ -80,3 +80,4 @@ void MazeCell::setBGColor(Color color)
 {
 	backGround.setFillColor(color);
 }
+

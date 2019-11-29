@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <map>
+#include <SFML\Window\Joystick.hpp>
 using namespace sf;
 
 enum Path
@@ -22,13 +23,13 @@ public:
 	int getRow();
 	bool isVisited = false;
 	void setBGColor(Color color);
-
+	
 private:
 	int column = 0;
 	int row = 0;
-	Color DefaultColor;
 	RectangleShape backGround;
 	RectangleShape walls[4];
+	Color bgColor;
 	bool activeWalls[4]{false,false,false,false};
 	
 };
