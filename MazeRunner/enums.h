@@ -1,7 +1,7 @@
 #pragma once
 enum class MainMenuElementName
 {
-	Generate, Files, Save, Options, Exit
+	Generate, Solve, Files, Save, Options, Exit
 };
 enum class OptionsMenuElementName
 {
@@ -9,7 +9,7 @@ enum class OptionsMenuElementName
 };
 enum class MenuElement
 {
-	MainMenu, OptionsMenu, FilesMenu
+	MainMenu, OptionsMenu
 };
 enum class ScreenMode
 {

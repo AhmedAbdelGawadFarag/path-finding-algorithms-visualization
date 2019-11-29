@@ -2,6 +2,9 @@
 #include <iostream>
 Menu::Menu(RenderWindow *window,Maze *maze)
 {
+	//to populate the file names vector
+	fileNames();
+
 	this->window = window;
 	this->maze = maze;
 
@@ -9,8 +12,6 @@ Menu::Menu(RenderWindow *window,Maze *maze)
 		mainMenu.push_back(new Text());
 	for (int i = 0; i < OptionsMenuMaxElements; i++)
 		optionsMenu.push_back(new Text());
-	for (int i = 0; i < fileMenuSize; i++)
-		filesMenu.push_back(new Text());
 
 	float width = window->getSize().x;
 	float height = window->getSize().y;
@@ -20,30 +21,35 @@ Menu::Menu(RenderWindow *window,Maze *maze)
 	//Main Menu
 	mainMenu[0]->setFont(font);
 	mainMenu[0]->setFillColor(Color::White);
-	mainMenu[0]->setString("Generate maze");
+	mainMenu[0]->setString("Generate maze ");
 	mainMenu[0]->setPosition(Vector2f(width * 0.45, height / (MainMenuMaxElements ) ));
-
 
 	mainMenu[1]->setFont(font);
 	mainMenu[1]->setFillColor(Color::White);
-	mainMenu[1]->setString("Maze From File");
-	mainMenu[1]->setPosition(Vector2f(width * 0.45, (height / MainMenuMaxElements) + 85));
+	mainMenu[1]->setString("     Solve     ");
+	mainMenu[1]->setPosition(Vector2f(width * 0.45, height / (MainMenuMaxElements) + 85));
+
 
 	mainMenu[2]->setFont(font);
 	mainMenu[2]->setFillColor(Color::White);
-	mainMenu[2]->setString("Save Maze");
-	mainMenu[2]->setPosition(Vector2f(width * 0.465, (height / MainMenuMaxElements) + 170));
+	mainMenu[2]->setString(" Load From File");
+	mainMenu[2]->setPosition(Vector2f(width * 0.45, (height / MainMenuMaxElements) + 170));
 
 	mainMenu[3]->setFont(font);
 	mainMenu[3]->setFillColor(Color::White);
-	mainMenu[3]->setString("Options");
-	mainMenu[3]->setPosition(Vector2f(width * 0.48, (height / MainMenuMaxElements) + 255));
-
+	mainMenu[3]->setString("  Save Maze   ");
+	mainMenu[3]->setPosition(Vector2f(width * 0.45, (height / MainMenuMaxElements) + 255));
 
 	mainMenu[4]->setFont(font);
 	mainMenu[4]->setFillColor(Color::White);
-	mainMenu[4]->setString("Exit");
-	mainMenu[4]->setPosition(Vector2f(width * 0.495, (height / MainMenuMaxElements) + 340));
+	mainMenu[4]->setString("   Options    ");
+	mainMenu[4]->setPosition(Vector2f(width * 0.45, (height / MainMenuMaxElements) + 340));
+
+
+	mainMenu[5]->setFont(font);
+	mainMenu[5]->setFillColor(Color::White);
+	mainMenu[5]->setString("     Exit     ");
+	mainMenu[5]->setPosition(Vector2f(width * 0.45, (height / MainMenuMaxElements) + 425));
 
 	//options Menu
 	optionsMenu[0]->setFont(font);
@@ -77,12 +83,6 @@ Menu::Menu(RenderWindow *window,Maze *maze)
 	optionsMenu[5]->setString("Animation : ON");
 	optionsMenu[5]->setPosition(Vector2f(width * 0.43, (height / MainMenuMaxElements) + 425 ));
 
-	//File Menu Back 
-	filesMenu[0]->setFont(font);
-	filesMenu[0]->setFillColor(Color::White);
-	filesMenu[0]->setString("Back");
-	filesMenu[0]->setPosition(Vector2f(width * 0.45, (height / MainMenuMaxElements)));
-
 
 }
 
@@ -104,10 +104,6 @@ void Menu::draw()
 		for (int i = 0; i < OptionsMenuMaxElements; i++)
 			window->draw(*this->optionsMenu[i]);
 		break;
-	case MenuElement::FilesMenu:
-		for (int i = 0; i < fileMenuSize ; i++)
-			window->draw(*this->filesMenu[i]);
-		break;
 	
 	}
 	
@@ -118,7 +114,7 @@ void Menu::moveUp()
 	
 	if (videoModeSelected)
 	{
-		videoModeIndex--;
+		--videoModeIndex;
 		if (videoModeIndex < 0)
 			videoModeIndex = videoModes.size() - 1;
 		updateText();
@@ -132,6 +128,13 @@ void Menu::moveUp()
 	else if (columnSelected)
 	{
 		++cellCount.x;
+		updateText();
+	}
+	else if (filesSelected)
+	{
+		--filesIndex;
+		if (filesIndex < 0)
+			filesIndex = files.size() - 1;
 		updateText();
 	}
 	else
@@ -152,13 +155,6 @@ void Menu::moveUp()
 		update();
 		break;
 
-	case MenuElement::FilesMenu:
-		filesMenuCurrentIndex--;
-		if (filesMenuCurrentIndex < 0)
-			filesMenuCurrentIndex = fileMenuSize - 1;
-		update();
-		break;
-	
 	}
 	
 	
@@ -168,7 +164,7 @@ void Menu::moveDown()
 {
 	if (videoModeSelected)
 	{
-		videoModeIndex++;
+		++videoModeIndex;
 		if (videoModeIndex > videoModes.size() - 1)
 			videoModeIndex = 0;
 		updateText();
@@ -182,6 +178,13 @@ void Menu::moveDown()
 	else if (columnSelected)
 	{
 		--cellCount.x;
+		updateText();
+	}
+	else if (filesSelected)
+	{
+		++filesIndex;
+		if (filesIndex > files.size() - 1)
+			filesIndex = 0;
 		updateText();
 	}
 	else 
@@ -199,13 +202,6 @@ void Menu::moveDown()
 		optionsMenuCurrentIndex++;
 		if (optionsMenuCurrentIndex >= OptionsMenuMaxElements)
 			optionsMenuCurrentIndex = 0;
-		update();
-		break;
-
-	case MenuElement::FilesMenu:
-		filesMenuCurrentIndex++;
-		if (filesMenuCurrentIndex >= fileMenuSize)
-			filesMenuCurrentIndex = 0;
 		update();
 		break;
 
@@ -246,12 +242,6 @@ void Menu::update()
 		optionsMenu[optionsMenuCurrentIndex]->setFillColor(Color::Red);
 		break;
 
-	case MenuElement::FilesMenu:
-		for (int i = 0; i < fileMenuSize; i++)
-			filesMenu[i]->setFillColor(Color::White);
-
-		filesMenu[filesMenuCurrentIndex]->setFillColor(Color::Red);
-		break;
 	}
 	
 }
@@ -272,32 +262,33 @@ void Menu::updateText()
 		optionsMenu[3]->setString("Row Count : " + std::to_string(cellCount.y));
 	if (columnSelected)
 		optionsMenu[4]->setString("Column Count : " + std::to_string(cellCount.x));
-}
-
-int Menu::checked()
-{
-	return  mainMenuCurrentIndex;
+	if (filesSelected)
+		mainMenu[2]->setString("File : " + files[filesIndex]);
 }
 
 void Menu::eventHandler(Event& event)
 {
-	if ( event.type != Event::KeyReleased )
+	if ( event.type != Event::KeyPressed )
 		return;
 	switch (event.key.code)
 	{
 	 case Keyboard::Key::Escape:
 		 if (!mainState)
 			 mainState = true;
-		 currentMenu = MenuElement::MainMenu;
+		 if(!rowSelected && !columnSelected && !videoModeSelected )
+			 currentMenu = MenuElement::MainMenu;
 		 break;
 	 case Keyboard::Key::Up:
-		 moveUp();
+		 if (mainState)
+			 moveUp();
 		 break;
 	 case Keyboard::Key::Down:
-		 moveDown();
+		 if (mainState)
+			 moveDown();
 		 break;
 	 case Keyboard::Key::Enter:
-		 onAction();
+		 if(mainState)
+			onAction();
 		 break;
 		
 	}
@@ -312,14 +303,21 @@ void Menu::onAction()
 		switch ( static_cast<MainMenuElementName>(mainMenuCurrentIndex) )
 		{
 		case MainMenuElementName::Generate:
-			maze->generate(static_cast<Vector2f>(window->getSize()), cellCount);
+			maze->generate(cellCount);
 			mainState = false;
 			break;
 
 		case MainMenuElementName::Files:
-			currentMenu = MenuElement::FilesMenu;
-			filesMenuCurrentIndex = 0;
-			update();
+			if (filesSelected)
+			{
+				maze->readFile(files[filesIndex]);
+				mainState = false;
+				filesSelected = false;
+			}
+			else
+			{
+				filesSelected = true;
+			}
 			break;
 
 		case MainMenuElementName::Save:
@@ -366,7 +364,6 @@ void Menu::onAction()
 				window->create(videoModes[videoModeIndex], "Maze Runner!", Style::Default);
 				else
 				window->create(videoModes[videoModeIndex], "Maze Runner!", Style::Fullscreen);
-
 				videoModeSelected = false;
 			}
 			else
@@ -397,18 +394,12 @@ void Menu::onAction()
 	
 		}
 		break;
-
-	case MenuElement::FilesMenu:
-		switch (filesMenuCurrentIndex)
-		{
-		case 0:
-			currentMenu = MenuElement::MainMenu;
-			filesMenuCurrentIndex = -1;
-		default:
-			mainState = false;
-			break;
-		}
-		break;
-	
 	}
+}
+
+void Menu::fileNames()
+{
+	for (const auto& entry : std::filesystem::directory_iterator(std::filesystem::current_path()))
+		if (entry.path().filename().extension() == ".txt")
+			files.push_back(entry.path().filename().generic_string());	
 }

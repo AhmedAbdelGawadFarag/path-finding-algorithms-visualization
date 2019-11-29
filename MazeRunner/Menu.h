@@ -4,9 +4,10 @@
 #include "Maze.h"
 #include "enums.h"
 #include <string>
+#include <filesystem>
 using namespace sf;
 
-#define MainMenuMaxElements 5
+#define MainMenuMaxElements 6
 #define OptionsMenuMaxElements 6
 
 class Menu
@@ -22,27 +23,24 @@ public:
 	void close();
 	void update();
 	void updateText();
-	int checked();
 	void eventHandler(Event&);
 	void onAction();
+	void fileNames();
 private:
 	
 
 	std::vector<Text*> mainMenu;
-	std::vector<Text*> filesMenu;
 	std::vector<Text*> optionsMenu;
 	std::vector<VideoMode> videoModes = sf::VideoMode::getFullscreenModes();
-
+	std::vector<std::string> files;
 	Font font;
 
 	MenuElement currentMenu = MenuElement::MainMenu;
 
 	int mainMenuCurrentIndex = -1,
 		optionsMenuCurrentIndex = -1,
-		filesMenuCurrentIndex = -1,
-		videoModeIndex = 9;	
-	int fileMenuSize = 1;
-	
+		videoModeIndex = 9,
+		filesIndex = 0;	
 	
 	RenderWindow* window;
 	Maze* maze;
@@ -52,10 +50,10 @@ private:
 
 	bool mainState = false,
 		optionsState = false,
-		filesState = false,
 		videoModeSelected = false,
 		rowSelected = false,
-		columnSelected = false;
+		columnSelected = false,
+		filesSelected = false;
 	
 };
 

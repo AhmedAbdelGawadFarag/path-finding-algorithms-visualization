@@ -3,22 +3,24 @@
 #include <iostream>
 #include "Menu.h"
 #include "Maze.h"
-#include"ReadMaze.h"
 #include <string>
+#include <filesystem>
+
 using namespace std;
 using namespace sf;
-bool MenuFile = true, MazeGenerator = false, MazeFile = false;
+
+
 int main() {
 
-	RenderWindow window(VideoMode(1366, 768), "Maze Runner!", Style::Default);
 
-	ReadMaze readmaze("maze1.txt", window.getSize(), 0.5, Color::Red, Color::Blue);
-	
+
+	RenderWindow window(VideoMode(1366, 768), "Maze Runner!", Style::Default);	
 
 	window.setFramerateLimit(60);
 	
-	Maze maze(sf::Vector2f(window.getSize().x , window.getSize().y ), 1.5, sf::Vector2i(45, 30), sf::Color::Blue , sf::Color::Black);
+	Maze maze(&window, 1.5, sf::Vector2i(45, 30), sf::Color::White , sf::Color::Black);
 	Menu menu(&window, &maze);
+
 
 	sf::Event event;
 	menu.open();
@@ -29,7 +31,7 @@ int main() {
 		{
 			switch (event.type)
 			{
-			case sf::Event::KeyReleased:
+			case sf::Event::KeyPressed:
 				menu.eventHandler(event);
 				break;
 
@@ -42,10 +44,14 @@ int main() {
 		window.clear();
 		if (menu.isOpen())
 			menu.draw();
-		else
+		else if (!maze.isFile())
 		{
 			maze.update();
-			maze.draw(&window);
+			maze.draw();
+		}
+		else
+		{
+			maze.draw();
 		}
 			
 		window.display();

@@ -4,32 +4,56 @@
 #include <vector>
 #include "MazeCell.h"
 #include "enums.h"
+#include <string>
+#include <fstream>
+#include<iostream>
 
 using namespace sf;
 class Maze
 {
 public:
-	Maze( Vector2f WindowSize, float wallWidth, Vector2i cellSize, Color backgroundColor, Color wallColor);
+	Maze( RenderWindow* window, float wallWidth, Vector2i cellSize, Color backgroundColor, Color wallColor);
 	~Maze();
 
-	MazeCell* getCell(Vector2i position);
 	void update();
-	void draw(RenderWindow* window);
-	MazeCell* randomCell(MazeCell * cell);
-	void removeWalls(MazeCell*,MazeCell*);
-	void clear();
-	void generate(Vector2f WindowSize, Vector2i cellSize);
+	void draw();
+	void generate(Vector2i cellSize);
+	void readFile(const std::string &FileName);
+	void saveFile();
+	bool isFile();
 
-	bool animation = true;
 private:
-	Vector2i cellCount;
-	std::stack<MazeCell*> stack;
+	MazeCell* getCell(Vector2i position);
+	MazeCell* randomCell(MazeCell* cell);
+	void removeWalls(MazeCell*, MazeCell*);
+	void charConverter(int row, int colm, int CellRow, int CellColm);
+	void fileUpdate();
+	void clear();
+
+public:
+	bool animation = true;
+
+private:
 	MazeCell* currentCell;
+	RenderWindow* window;
+
 	std::vector<std::vector<MazeCell*>> cells;
-	int row = 0, column = 0;
+	std::stack<MazeCell*> stack;
+
+	
+	Vector2i cellCount;
 	Vector2f cellSize;
-	float wallWidth = 0;
+	Vector2u windowSize;
 	Color backGroundColor, wallColor;
+
+	std::vector<std::vector<char>> charVector;
+
+	int row = 0, column = 0;
+	float wallWidth = 0;
+
+	int fileWidth = 0;
+	int fileHeight = 0;
+	bool fileOpen = false;
 	
 
 };
