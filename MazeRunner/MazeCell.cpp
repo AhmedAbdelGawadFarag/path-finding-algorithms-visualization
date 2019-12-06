@@ -6,7 +6,7 @@ MazeCell::MazeCell(Vector2f position, Vector2f size, int column, int row, float 
 
 	this->row = row;
 	this->column = column;
-
+	
 	this->backGround.setSize(size);
 	this->backGround.setPosition(position);
 	this->backGround.setFillColor(backgroundColor);
@@ -79,5 +79,10 @@ int MazeCell::getRow()
 void MazeCell::setBGColor(Color color)
 {
 	backGround.setFillColor(color);
+}
+
+RectangleShape * MazeCell::getBackGround()
+{
+	return &backGround;
 }
 

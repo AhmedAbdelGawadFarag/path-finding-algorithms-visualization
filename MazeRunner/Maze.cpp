@@ -143,6 +143,39 @@ bool Maze::isFile()
 	return fileOpen;
 }
 
+void Maze::onButtonClick(Vector2i MousePosition)
+{
+	for (int y = 0; y < cellCount.y; ++y) {
+		
+		for (int x = 0; x < cellCount.x; ++x) {
+			
+			Vector2f UpperLeftPoint, UpperRightPoint, LowerLeftPoint, LowerRightPoint;
+			Vector2f BGsize= cells[y][x]->getBackGround()->getSize();
+			//std::cout << "size" << BGsize.x << " " << BGsize.y << std::endl;
+			UpperLeftPoint=cells[y][x]->getBackGround()->getPosition();
+			//std:: cout << UpperLeftPoint.x << " " << UpperLeftPoint.y << std::endl;
+
+			UpperRightPoint = Vector2f(UpperLeftPoint.x + BGsize.x , UpperLeftPoint.y);
+			//std::cout << UpperRightPoint.x << " " << UpperRightPoint.y << std::endl;
+
+			LowerLeftPoint = Vector2f(UpperLeftPoint.x , UpperLeftPoint.y + BGsize.y);
+			//std::cout << LowerLeftPoint.x << " " << LowerLeftPoint.y << std::endl;
+
+			LowerRightPoint = Vector2f(UpperLeftPoint.x + BGsize.x , UpperLeftPoint.y + BGsize.y);
+			//std::cout << LowerRightPoint.x << " " << LowerRightPoint.y << std::endl;
+
+			if (MousePosition.x >= UpperLeftPoint.x && MousePosition.x <= UpperRightPoint.x && MousePosition.y>=UpperLeftPoint.y&&MousePosition.y<=LowerLeftPoint.y) {
+				std::cout << "yessss" << std::endl;
+				cells[y][x]->getBackGround()->setFillColor(Color::Green);
+				break;
+			}
+			//system("pause");
+			
+		}
+			
+	}
+}
+
 MazeCell* Maze::getCell(Vector2i position)
 {
 	if (position.x < 0 || position.y < 0 || position.x >= this->cellCount.x || position.y >= this->cellCount.y)

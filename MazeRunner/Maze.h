@@ -21,6 +21,7 @@ public:
 	void readFile(const std::string &FileName);
 	void saveFile();
 	bool isFile();
+	void onButtonClick(Vector2i MousePosition);
 
 private:
 	MazeCell* getCell(Vector2i position);
