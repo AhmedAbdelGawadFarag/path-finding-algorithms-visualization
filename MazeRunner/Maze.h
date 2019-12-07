@@ -21,7 +21,12 @@ public:
 	void readFile(const std::string &FileName);
 	void saveFile();
 	bool isFile();
-	void onButtonClick(Vector2i MousePosition);
+	MazeCell* onButtonClick(Vector2i MousePosition,Color color);
+	
+	void setSart(MazeCell* cell);
+	void SetEnd(MazeCell* cell);
+	MazeCell* getStart();
+	MazeCell* getEnd();
 
 private:
 	MazeCell* getCell(Vector2i position);
@@ -55,6 +60,8 @@ private:
 	int fileWidth = 0;
 	int fileHeight = 0;
 	bool fileOpen = false;
+	MazeCell* startMaze;
+	MazeCell* endMaze;
 	
 
 };

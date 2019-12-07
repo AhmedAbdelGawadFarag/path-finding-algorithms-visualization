@@ -24,6 +24,7 @@ public:
 	bool isVisited = false;
 	void setBGColor(Color color);
 	RectangleShape * getBackGround();
+	
 private:
 	int column = 0;
 	int row = 0;

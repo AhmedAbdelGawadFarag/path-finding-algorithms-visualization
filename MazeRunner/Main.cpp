@@ -13,17 +13,17 @@ using namespace sf;
 
 int main() {
 
-
+	int cnt = 0;
 
 	RenderWindow window(VideoMode(1366, 768), "Maze Runner!", Style::Default);	
 
 	window.setFramerateLimit(30);
 	
-	Maze maze(&window, 1.5, sf::Vector2i(45, 30), sf::Color::Red , sf::Color::Blue);
+	Maze maze(&window, 1.5, sf::Vector2i(45, 30), sf::Color::White , sf::Color::Black);
 	Menu menu(&window, &maze);
+	
 
-
-	sf::Event event;
+		 sf::Event event;
 	menu.open();
 	while (window.isOpen())
 	{	
@@ -43,8 +43,17 @@ int main() {
 
 			}
 			if (Mouse::isButtonPressed(Mouse::Button::Left)) {
-				cout << Mouse::getPosition(window).x << " " << Mouse::getPosition(window).y << endl;;
-				maze.onButtonClick(Mouse::getPosition(window));
+				//cout << Mouse::getPosition(window).x << " " << Mouse::getPosition(window).y << endl;;
+				if (cnt==0) {
+				maze.setSart(maze.onButtonClick(Mouse::getPosition(window),Color::Blue));
+
+				}
+				else if (cnt == 1) {
+					maze.SetEnd(maze.onButtonClick(Mouse::getPosition(window), Color::Cyan));
+				}
+				//cout << cnt << endl;
+				cnt++;
+				
 			}
 
 		}

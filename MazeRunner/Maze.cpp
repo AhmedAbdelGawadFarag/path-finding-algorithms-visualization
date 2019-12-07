@@ -56,9 +56,20 @@ void Maze::update()
 
 void Maze::fileUpdate()
 {
-	for (int i = 1, CellRow = 0; i < charVector.size(); i += 2, CellRow++) 
-		for (int j = 1, CellColm = 0; j < charVector[i].size(); j += 2, CellColm++) 
+	for (int i = 1, CellRow = 0; i < charVector.size(); i += 2, CellRow++) {
+		for (int j = 1, CellColm = 0; j < charVector[i].size(); j += 2, CellColm++) {
+			if (charVector[i][j] == '*') {
+				cells[CellRow][CellColm]->getBackGround()->setFillColor(Color::Blue);
+				setSart(cells[CellRow][CellColm]);
+			}
+			if (charVector[i][j] == 'O') {
+				cells[CellRow][CellColm]->getBackGround()->setFillColor(Color::Magenta);
+				SetEnd(cells[CellRow][CellColm]);
+			}
+
 			charConverter(i, j, CellRow, CellColm);
+		}
+	}
 }
 
 void Maze::draw()
@@ -143,7 +154,7 @@ bool Maze::isFile()
 	return fileOpen;
 }
 
-void Maze::onButtonClick(Vector2i MousePosition)
+MazeCell* Maze::onButtonClick(Vector2i MousePosition,Color color)
 {
 	for (int y = 0; y < cellCount.y; ++y) {
 		
@@ -165,8 +176,9 @@ void Maze::onButtonClick(Vector2i MousePosition)
 			//std::cout << LowerRightPoint.x << " " << LowerRightPoint.y << std::endl;
 
 			if (MousePosition.x >= UpperLeftPoint.x && MousePosition.x <= UpperRightPoint.x && MousePosition.y>=UpperLeftPoint.y&&MousePosition.y<=LowerLeftPoint.y) {
-				std::cout << "yessss" << std::endl;
-				cells[y][x]->getBackGround()->setFillColor(Color::Green);
+				//std::cout << "yessss" << std::endl;
+				cells[y][x]->getBackGround()->setFillColor(color);
+				return cells[y][x];
 				break;
 			}
 			//system("pause");
@@ -277,3 +289,26 @@ void Maze::clear()
 		stack.pop();
 	}
 }
+void Maze::setSart(MazeCell *cell)
+{
+	this->startMaze = cell;
+	std::cout<<"start cell row is : "<<startMaze->getRow()<<" start colom is : "<<startMaze->getColumn()<<std::endl;
+}
+
+void Maze::SetEnd(MazeCell* cell)
+{
+	this->endMaze = cell;
+	std::cout << "end cell row is : " << endMaze->getRow() << " end colom is : " << endMaze->getColumn() << std::endl;
+
+}
+
+MazeCell* Maze::getStart()
+{
+	return this->startMaze;
+}
+
+MazeCell* Maze::getEnd()
+{
+	return this->endMaze;
+}
+
