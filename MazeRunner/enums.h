@@ -7,9 +7,13 @@ enum class OptionsMenuElementName
 {
 	Back, ScreenMode, ScreenRes, RowCount, ColumnCount, Animation
 };
+enum class SolveMenuElementName
+{
+	Back, DFS, BFS, BestFirst, Dijkstra, AStar
+};
 enum class MenuElement
 {
-	MainMenu, OptionsMenu
+	MainMenu, OptionsMenu, SolveMenu
 };
 enum class ScreenMode
 {

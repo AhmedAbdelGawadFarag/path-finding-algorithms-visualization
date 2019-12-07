@@ -9,7 +9,7 @@ using namespace sf;
 
 #define MainMenuMaxElements 6
 #define OptionsMenuMaxElements 6
-
+#define SolveMenuMaxElements 6
 class Menu
 {
 public:
@@ -31,6 +31,7 @@ private:
 
 	std::vector<Text*> mainMenu;
 	std::vector<Text*> optionsMenu;
+	std::vector<Text*> solveMenu;
 	std::vector<VideoMode> videoModes = sf::VideoMode::getFullscreenModes();
 	std::vector<std::string> files;
 	Font font;
@@ -39,6 +40,7 @@ private:
 
 	int mainMenuCurrentIndex = -1,
 		optionsMenuCurrentIndex = -1,
+		solveMenuCurrentIndex = -1,
 		videoModeIndex = 9,
 		filesIndex = 0;	
 	

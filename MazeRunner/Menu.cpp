@@ -12,6 +12,8 @@ Menu::Menu(RenderWindow *window,Maze *maze)
 		mainMenu.push_back(new Text());
 	for (int i = 0; i < OptionsMenuMaxElements; i++)
 		optionsMenu.push_back(new Text());
+	for (int i = 0; i < SolveMenuMaxElements; i++)
+		solveMenu.push_back(new Text());
 
 	float width = window->getSize().x;
 	float height = window->getSize().y;
@@ -83,7 +85,36 @@ Menu::Menu(RenderWindow *window,Maze *maze)
 	optionsMenu[5]->setString("Animation : ON");
 	optionsMenu[5]->setPosition(Vector2f(width * 0.43, (height / MainMenuMaxElements) + 425 ));
 
+	//Solve Menu
+	solveMenu[0]->setFont(font);
+	solveMenu[0]->setFillColor(Color::White);
+	solveMenu[0]->setString("Back");
+	solveMenu[0]->setPosition(Vector2f(width * 0.45, height / SolveMenuMaxElements + 85));
 
+	solveMenu[1]->setFont(font);
+	solveMenu[1]->setFillColor(Color::White);
+	solveMenu[1]->setString("DFS");
+	solveMenu[1]->setPosition(Vector2f(width * 0.45, height / SolveMenuMaxElements + 170));
+
+	solveMenu[2]->setFont(font);
+	solveMenu[2]->setFillColor(Color::White);
+	solveMenu[2]->setString("BFS");
+	solveMenu[2]->setPosition(Vector2f(width * 0.45, height / SolveMenuMaxElements + 255));
+
+	solveMenu[3]->setFont(font);
+	solveMenu[3]->setFillColor(Color::White);
+	solveMenu[3]->setString("Best First");
+	solveMenu[3]->setPosition(Vector2f(width * 0.45, height / SolveMenuMaxElements + 340));
+
+	solveMenu[4]->setFont(font);
+	solveMenu[4]->setFillColor(Color::White);
+	solveMenu[4]->setString("Dijkstra");
+	solveMenu[4]->setPosition(Vector2f(width * 0.45, height / SolveMenuMaxElements + 425));
+
+	solveMenu[5]->setFont(font);
+	solveMenu[5]->setFillColor(Color::White);
+	solveMenu[5]->setString("A*");
+	solveMenu[5]->setPosition(Vector2f(width * 0.45, height / SolveMenuMaxElements + 510));
 }
 
 Menu::~Menu()
@@ -104,7 +135,10 @@ void Menu::draw()
 		for (int i = 0; i < OptionsMenuMaxElements; i++)
 			window->draw(*this->optionsMenu[i]);
 		break;
-	
+	case MenuElement::SolveMenu:
+		for (int i = 0; i < SolveMenuMaxElements; i++)
+			window->draw(*this->solveMenu[i]);
+		break;
 	}
 	
 }
@@ -154,7 +188,12 @@ void Menu::moveUp()
 			optionsMenuCurrentIndex = OptionsMenuMaxElements - 1;	
 		update();
 		break;
-
+	case MenuElement::SolveMenu:
+		solveMenuCurrentIndex--;
+		if (solveMenuCurrentIndex < 0)
+			solveMenuCurrentIndex = SolveMenuMaxElements - 1;
+		update();
+		break;
 	}
 	
 	
@@ -204,7 +243,12 @@ void Menu::moveDown()
 			optionsMenuCurrentIndex = 0;
 		update();
 		break;
-
+	case MenuElement::SolveMenu:
+		solveMenuCurrentIndex++;
+		if (solveMenuCurrentIndex >= SolveMenuMaxElements)
+			solveMenuCurrentIndex = 0;
+		update();
+		break;
 	}
 	
 }
@@ -241,7 +285,12 @@ void Menu::update()
 
 		optionsMenu[optionsMenuCurrentIndex]->setFillColor(Color::Red);
 		break;
+	case MenuElement::SolveMenu:
+		for (int i = 0; i < SolveMenuMaxElements; i++)
+			solveMenu[i]->setFillColor(Color::White);
 
+		solveMenu[solveMenuCurrentIndex]->setFillColor(Color::Red);
+		break;
 	}
 	
 }
@@ -275,6 +324,8 @@ void Menu::eventHandler(Event& event)
 	 case Keyboard::Key::Escape:
 		 if (!mainState)
 			 mainState = true;
+		 if (currentMenu == MenuElement::SolveMenu)
+			 break;
 		 if(!rowSelected && !columnSelected && !videoModeSelected )
 			 currentMenu = MenuElement::MainMenu;
 		 break;
@@ -306,7 +357,10 @@ void Menu::onAction()
 			maze->generate(cellCount);
 			mainState = false;
 			break;
-
+		case MainMenuElementName::Solve:
+			currentMenu = MenuElement::SolveMenu;
+			solveMenuCurrentIndex = 0;
+			break;
 		case MainMenuElementName::Files:
 			if (filesSelected)
 			{
@@ -394,7 +448,39 @@ void Menu::onAction()
 	
 		}
 		break;
+
+	case MenuElement::SolveMenu:
+		
+		switch (static_cast<SolveMenuElementName>(solveMenuCurrentIndex))
+		{
+		case SolveMenuElementName::Back:
+			currentMenu = MenuElement::MainMenu;
+			solveMenuCurrentIndex = -1;
+			break;
+		case SolveMenuElementName::DFS:
+			//call DFS Function here
+			mainState = false;
+			break;
+		case SolveMenuElementName::BFS:
+			//call BFS Function here
+			mainState = false;
+			break;
+		case SolveMenuElementName::BestFirst:
+			//call Best First Search Function here
+			mainState = false;
+			break;
+		case SolveMenuElementName::Dijkstra:
+			//call Dijkstra Function here
+			mainState = false;
+			break;
+		case SolveMenuElementName::AStar:
+			//call A* Function here
+			mainState = false;
+			break;
+		}
+		break;
 	}
+	
 }
 
 void Menu::fileNames()
