@@ -3,6 +3,8 @@
 Maze::Maze( RenderWindow* window, float wallWidth, Vector2i cells, Color backgroundColor, Color wallColor)
 {
 	std::srand(std::time(0));
+	startMaze = NULL;
+	endMaze = NULL;
 
 	this->currentCell = 0;
 	this->window = window;
@@ -154,37 +156,45 @@ bool Maze::isFile()
 	return fileOpen;
 }
 
-MazeCell* Maze::onButtonClick(Vector2i MousePosition,Color color)
+MazeCell* Maze::onButtonClick(Vector2i MousePosition)
 {
-	for (int y = 0; y < cellCount.y; ++y) {
-		
-		for (int x = 0; x < cellCount.x; ++x) {
-			
-			Vector2f UpperLeftPoint, UpperRightPoint, LowerLeftPoint, LowerRightPoint;
-			Vector2f BGsize= cells[y][x]->getBackGround()->getSize();
-			//std::cout << "size" << BGsize.x << " " << BGsize.y << std::endl;
-			UpperLeftPoint=cells[y][x]->getBackGround()->getPosition();
-			//std:: cout << UpperLeftPoint.x << " " << UpperLeftPoint.y << std::endl;
+	if (startMaze == NULL||endMaze == NULL) {
+		for (int y = 0; y < cellCount.y; ++y) {
 
-			UpperRightPoint = Vector2f(UpperLeftPoint.x + BGsize.x , UpperLeftPoint.y);
-			//std::cout << UpperRightPoint.x << " " << UpperRightPoint.y << std::endl;
+			for (int x = 0; x < cellCount.x; ++x) {
 
-			LowerLeftPoint = Vector2f(UpperLeftPoint.x , UpperLeftPoint.y + BGsize.y);
-			//std::cout << LowerLeftPoint.x << " " << LowerLeftPoint.y << std::endl;
+				Vector2f UpperLeftPoint, UpperRightPoint, LowerLeftPoint, LowerRightPoint;
+				Vector2f BGsize = cells[y][x]->getBackGround()->getSize();
+				//std::cout << "size" << BGsize.x << " " << BGsize.y << std::endl;
+				UpperLeftPoint = cells[y][x]->getBackGround()->getPosition();
+				//std:: cout << UpperLeftPoint.x << " " << UpperLeftPoint.y << std::endl;
 
-			LowerRightPoint = Vector2f(UpperLeftPoint.x + BGsize.x , UpperLeftPoint.y + BGsize.y);
-			//std::cout << LowerRightPoint.x << " " << LowerRightPoint.y << std::endl;
+				UpperRightPoint = Vector2f(UpperLeftPoint.x + BGsize.x, UpperLeftPoint.y);
+				//std::cout << UpperRightPoint.x << " " << UpperRightPoint.y << std::endl;
 
-			if (MousePosition.x >= UpperLeftPoint.x && MousePosition.x <= UpperRightPoint.x && MousePosition.y>=UpperLeftPoint.y&&MousePosition.y<=LowerLeftPoint.y) {
-				//std::cout << "yessss" << std::endl;
-				cells[y][x]->getBackGround()->setFillColor(color);
-				return cells[y][x];
-				break;
+				LowerLeftPoint = Vector2f(UpperLeftPoint.x, UpperLeftPoint.y + BGsize.y);
+				//std::cout << LowerLeftPoint.x << " " << LowerLeftPoint.y << std::endl;
+
+				LowerRightPoint = Vector2f(UpperLeftPoint.x + BGsize.x, UpperLeftPoint.y + BGsize.y);
+				//std::cout << LowerRightPoint.x << " " << LowerRightPoint.y << std::endl;
+
+				if (MousePosition.x >= UpperLeftPoint.x && MousePosition.x <= UpperRightPoint.x && MousePosition.y >= UpperLeftPoint.y && MousePosition.y <= LowerLeftPoint.y) {
+					//std::cout << "yessss" << std::endl;
+					if (startMaze == NULL) {
+						setSart(cells[y][x]);
+						cells[y][x]->getBackGround()->setFillColor(Color::Magenta);
+					}
+					else {
+						SetEnd(cells[y][x]);
+						cells[y][x]->getBackGround()->setFillColor(Color::Cyan);
+					}
+					return cells[y][x];
+				}
+				//system("pause");
+
 			}
-			//system("pause");
-			
+
 		}
-			
 	}
 }
 
@@ -278,6 +288,8 @@ void Maze::charConverter(int row, int colm, int CellRow, int CellColm)
 
 void Maze::clear()
 {
+	startMaze = NULL;
+	endMaze = NULL;
 	for (int y = 0; y < cellCount.y; ++y)
 		for (int x = 0; x < cellCount.x; ++x)
 			delete cells[y][x];

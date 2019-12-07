@@ -44,15 +44,12 @@ int main() {
 			}
 			if (Mouse::isButtonPressed(Mouse::Button::Left)) {
 				//cout << Mouse::getPosition(window).x << " " << Mouse::getPosition(window).y << endl;;
-				if (cnt==0) {
-				maze.setSart(maze.onButtonClick(Mouse::getPosition(window),Color::Blue));
-
-				}
-				else if (cnt == 1) {
-					maze.SetEnd(maze.onButtonClick(Mouse::getPosition(window), Color::Cyan));
-				}
+				
+				
+				maze.onButtonClick(Mouse::getPosition(window));
+				
 				//cout << cnt << endl;
-				cnt++;
+				
 				
 			}
 
