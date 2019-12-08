@@ -86,6 +86,7 @@ void Maze::generate(Vector2i cellCount)
 	clear();
 	fileOpen = false;
 
+	this->windowSize = this->window->getSize();
 	this->cellCount = cellCount;
 	this->cellSize = Vector2f(windowSize.x / cellCount.x, windowSize.y / cellCount.y);
 
@@ -403,6 +404,9 @@ void Maze::BFS()
 				cells[next.y][next.x]->setBGColor(VisitedCellColor);	
 			}
 		}
+		window->clear();
+		draw();
+		window->display();
 	}
  
 	if (end)
@@ -440,20 +444,3 @@ void Maze::BFS()
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

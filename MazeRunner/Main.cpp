@@ -15,7 +15,7 @@ int main() {
 
 	RenderWindow window(VideoMode(1366, 768), "Maze Runner!", Style::Default);	
 
-	window.setFramerateLimit(60);
+	//window.setFramerateLimit(60);
 	
 	Maze maze(&window, 1.5, sf::Vector2i(45, 30), sf::Color::White , sf::Color::Black);
 	Menu menu(&window, &maze);
