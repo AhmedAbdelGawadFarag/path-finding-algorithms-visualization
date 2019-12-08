@@ -38,7 +38,7 @@ MazeCell::~MazeCell()
 {
 }
 
-void MazeCell::draw(RenderWindow* window,MazeCell* currentCell)
+void MazeCell::draw(RenderWindow* window)
 {
 	 
       if(this->isVisited)
@@ -58,7 +58,6 @@ void MazeCell::draw(RenderWindow* window,MazeCell* currentCell)
 void MazeCell::setActiveWalls(Path dir)
 {
 	this->activeWalls[dir] = true;
-
 }
 
 void MazeCell::removeWalls(Path dir)

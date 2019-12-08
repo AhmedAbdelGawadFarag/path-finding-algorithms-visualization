@@ -462,8 +462,8 @@ void Menu::onAction()
 			mainState = false;
 			break;
 		case SolveMenuElementName::BFS:
-			//call BFS Function here
 			mainState = false;
+			maze->BFS();
 			break;
 		case SolveMenuElementName::BestFirst:
 			//call Best First Search Function here

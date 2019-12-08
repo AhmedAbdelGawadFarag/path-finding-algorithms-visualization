@@ -16,7 +16,7 @@ public:
 	MazeCell(Vector2f position, Vector2f size, int column, int row, float wallWidth, Color backgroundColor, Color wallColor);
 	~MazeCell();
 
-	void draw(RenderWindow* window,MazeCell * currentCell);
+	void draw(RenderWindow* window);
 	void setActiveWalls(Path dir);
 	void removeWalls(Path dir);
 	int getColumn();
@@ -25,13 +25,14 @@ public:
 	void setBGColor(Color color);
 	RectangleShape * getBackGround();
 	
+	bool activeWalls[4]{ false,false,false,false };
 private:
 	int column = 0;
 	int row = 0;
 	RectangleShape backGround;
 	RectangleShape walls[4];
 	Color bgColor;
-	bool activeWalls[4]{false,false,false,false};
+	
 	
 };
 

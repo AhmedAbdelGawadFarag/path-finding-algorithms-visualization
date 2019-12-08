@@ -78,7 +78,7 @@ void Maze::draw()
 {
 	for (int y = 0; y < cellCount.y; y++)
 		for (int x = 0; x < cellCount.x; x++)
-			cells[y][x]->draw(window, currentCell);
+			cells[y][x]->draw(window);
 }
 
 void Maze::generate(Vector2i cellCount)
@@ -301,10 +301,31 @@ void Maze::clear()
 		stack.pop();
 	}
 }
+
+void Maze::getNeighbors(Vector2i current, std::vector<Vector2i>& neighbors)
+{
+	neighbors.clear();
+	if (!cells[current.y][current.x]->activeWalls[North])
+		neighbors.push_back(Vector2i(current.x, current.y - 1));
+	if (!cells[current.y][current.x]->activeWalls[East])
+		neighbors.push_back(Vector2i(current.x + 1, current.y));
+	if (!cells[current.y][current.x]->activeWalls[South])
+		neighbors.push_back(Vector2i(current.x, current.y + 1));
+	if (!cells[current.y][current.x]->activeWalls[West])
+		neighbors.push_back(Vector2i(current.x - 1, current.y));
+
+}
+
+void Maze::colorPath(std::vector<Vector2i>& path)
+{
+	for (int i = 0; i < path.size(); i++)
+		cells[path[i].y][path[i].x]->setBGColor(PathColor);
+}
+
 void Maze::setSart(MazeCell *cell)
 {
 	this->startMaze = cell;
-	std::cout<<"start cell row is : "<<startMaze->getRow()<<" start colom is : "<<startMaze->getColumn()<<std::endl;
+	std::cout<<"start cell row is : "<< startMaze->getRow() <<" start colom is : "<< startMaze->getColumn() << std::endl;
 }
 
 void Maze::SetEnd(MazeCell* cell)
@@ -323,4 +344,116 @@ MazeCell* Maze::getEnd()
 {
 	return this->endMaze;
 }
+
+void Maze::BFS()
+{
+	// counter to visited cells 
+	int visitedCounter = 0;
+	// bool grid to check visited or not
+	std::vector<std::vector<bool>> visited(this->cellCount.y);
+	for (int y = 0; y < cellCount.y; y++)
+		for (int x = 0; x < cellCount.x; x++)
+			visited[y].push_back(false);
+
+	// BFS queue
+	std::queue<Vector2i> queue;
+
+	// put start cell to the queue
+	queue.push(Vector2i(startMaze->getColumn(), startMaze->getRow()));
+
+	// make first cell visited
+	visited[queue.front().y][queue.front().x] = true;
+	++visitedCounter;
+
+	// Root grid to find solution at the end
+	std::vector<std::vector<Vector2i>> root(this->cellCount.y);
+	for (int y = 0; y < cellCount.y; y++)
+		for (int x = 0; x < cellCount.x; x++)
+			root[y].push_back(Vector2i(-1,-1));
+		
+	Vector2i node;
+	std::vector<Vector2i> neighbors;
+	bool end = false;
+	while (!queue.empty() && !end)
+	{
+		// get the next node in the queue 
+		node = queue.front();
+		queue.pop();
+		// get the neighbors of the node
+		getNeighbors(node, neighbors);
+		// iterate on each neighbor
+		for (auto next : neighbors)
+		{
+			// check if the neighbor wasn't visited
+			if (!visited[next.y][next.x])
+			{
+				// push each not visited neighbor and mark it as visited
+				queue.push(next);
+				visited[next.y][next.x] = true;
+				++visitedCounter;
+
+				// set each the root of each of the neighbors to backtrack the path
+				root[next.y][next.x] = node;
+
+				// check if it was the end cell
+				if (next.y == endMaze->getRow() && next.x == endMaze->getColumn())
+					end = true;
+
+				// Color visited cells
+				cells[next.y][next.x]->setBGColor(VisitedCellColor);	
+			}
+		}
+	}
+ 
+	if (end)
+	{
+		// clear console screen
+		system("cls");
+
+		// get the path from the end until finding default (-1,-1) 
+		std::vector<Vector2i> path;
+		
+		Vector2i at = Vector2i(endMaze->getColumn(), endMaze->getRow());
+
+		for (at ; at.x != -1 , at.y != -1 ; at = root[at.y][at.x])
+			path.push_back(at);
+
+		// reverse the path to ouput it correctly
+		std::reverse(path.begin(), path.end());
+
+		std::cout << "Visited Cells Count : " << visitedCounter << "\nPath Cell Count : " << path.size() << "\n";
+
+		int counter = 0;
+		for (auto it : path)
+		{
+			std::cout << "(" << it.x << "," << it.y << ")" << " ";
+			if (counter == 10)
+			{
+				std::cout << "\n";
+				counter = 0;
+			}
+			++counter;
+		}
+		// Color the path
+		colorPath(path);
+
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

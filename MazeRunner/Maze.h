@@ -7,6 +7,11 @@
 #include <string>
 #include <fstream>
 #include<iostream>
+#include <queue>
+#include <algorithm>
+
+#define PathColor Color::Cyan
+#define VisitedCellColor Color::Yellow
 
 using namespace sf;
 class Maze
@@ -27,6 +32,7 @@ public:
 	void SetEnd(MazeCell* cell);
 	MazeCell* getStart();
 	MazeCell* getEnd();
+	void BFS();
 
 private:
 	MazeCell* getCell(Vector2i position);
@@ -35,6 +41,8 @@ private:
 	void charConverter(int row, int colm, int CellRow, int CellColm);
 	void fileUpdate();
 	void clear();
+	void getNeighbors(Vector2i current, std::vector<Vector2i>& neighbors);
+	void colorPath(std::vector<Vector2i>& path);
 
 public:
 	bool animation = true;
