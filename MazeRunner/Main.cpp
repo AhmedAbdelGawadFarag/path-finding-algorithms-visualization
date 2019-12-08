@@ -13,11 +13,9 @@ using namespace sf;
 
 int main() {
 
-	int cnt = 0;
-
 	RenderWindow window(VideoMode(1366, 768), "Maze Runner!", Style::Default);	
 
-	window.setFramerateLimit(30);
+	window.setFramerateLimit(60);
 	
 	Maze maze(&window, 1.5, sf::Vector2i(45, 30), sf::Color::White , sf::Color::Black);
 	Menu menu(&window, &maze);

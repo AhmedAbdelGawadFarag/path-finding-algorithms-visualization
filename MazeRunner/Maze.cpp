@@ -61,11 +61,11 @@ void Maze::fileUpdate()
 	for (int i = 1, CellRow = 0; i < charVector.size(); i += 2, CellRow++) {
 		for (int j = 1, CellColm = 0; j < charVector[i].size(); j += 2, CellColm++) {
 			if (charVector[i][j] == '*') {
-				cells[CellRow][CellColm]->getBackGround()->setFillColor(Color::Blue);
+				cells[CellRow][CellColm]->getBackGround()->setFillColor(Color::Magenta);
 				setSart(cells[CellRow][CellColm]);
 			}
 			if (charVector[i][j] == 'O') {
-				cells[CellRow][CellColm]->getBackGround()->setFillColor(Color::Magenta);
+				cells[CellRow][CellColm]->getBackGround()->setFillColor(Color::Cyan);
 				SetEnd(cells[CellRow][CellColm]);
 			}
 
