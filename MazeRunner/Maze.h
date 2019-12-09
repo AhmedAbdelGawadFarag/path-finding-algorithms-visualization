@@ -60,7 +60,7 @@ private:
 	
 	Vector2i cellCount;
 	Vector2f cellSize;
-	Vector2u windowSize;
+	Vector2f windowSize;
 	Color backGroundColor, wallColor;
 
 	std::vector<std::vector<char>> charVector;

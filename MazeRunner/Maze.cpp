@@ -8,7 +8,7 @@ Maze::Maze( RenderWindow* window, float wallWidth, Vector2i cells, Color backgro
 
 	this->currentCell = 0;
 	this->window = window;
-	this->windowSize = window->getSize();
+	this->windowSize = Vector2f(window->getSize().x,window->getSize().y);
 	this->cellCount = cells;
 	this->cellSize.x = windowSize.x / cells.x;
 	this->cellSize.y = windowSize.y / cells.y;
@@ -86,7 +86,7 @@ void Maze::generate(Vector2i cellCount)
 	clear();
 	fileOpen = false;
 
-	this->windowSize = this->window->getSize();
+	this->windowSize = Vector2f(this->window->getSize().x,this->window->getSize().y);
 	this->cellCount = cellCount;
 	this->cellSize = Vector2f(windowSize.x / cellCount.x, windowSize.y / cellCount.y);
 
