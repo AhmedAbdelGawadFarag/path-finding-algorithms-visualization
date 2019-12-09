@@ -317,10 +317,31 @@ void Maze::getNeighbors(Vector2i current, std::vector<Vector2i>& neighbors)
 
 }
 
+void Maze::getUnVisitedNeighbor(Vector2i current, Vector2i &neighbor, const std::vector<std::vector<bool>>& visited)
+{
+	neighbor.y = -1;
+	neighbor.x = -1;
+	if (!cells[current.y][current.x]->activeWalls[East] && visited[current.y][current.x + 1] == false)
+		neighbor = Vector2i(current.x + 1, current.y);
+	else if (!cells[current.y][current.x]->activeWalls[South] && visited[current.y + 1][current.x] == false)
+		neighbor = Vector2i(current.x, current.y + 1);
+	else if (!cells[current.y][current.x]->activeWalls[West] && visited[current.y][current.x - 1] == false)
+		neighbor = Vector2i(current.x - 1, current.y);
+	else if (!cells[current.y][current.x]->activeWalls[North] && visited[current.y - 1][current.x] == false)
+		neighbor = Vector2i(current.x, current.y - 1);
+}
+
 void Maze::colorPath(std::vector<Vector2i>& path)
 {
 	for (int i = 0; i < path.size(); i++)
 		cells[path[i].y][path[i].x]->setBGColor(PathColor);
+}
+
+void Maze::clearColor()
+{
+	for (int y = 0; y < cellCount.y; ++y)
+		for (int x = 0; x < cellCount.x; ++x)
+			cells[y][x]->setBGColor(backGroundColor);
 }
 
 void Maze::setSart(MazeCell *cell)
@@ -348,6 +369,15 @@ MazeCell* Maze::getEnd()
 
 void Maze::BFS()
 {
+	// remove colors
+	clearColor();
+
+	// if start and end not selected set them to default
+	if (startMaze == NULL || endMaze == NULL)
+	{
+		startMaze = cells[0][0];
+		endMaze = cells[cellCount.y - 1][cellCount.x - 1];
+	}
 	// counter to visited cells 
 	int visitedCounter = 0;
 	// bool grid to check visited or not
@@ -393,7 +423,7 @@ void Maze::BFS()
 				visited[next.y][next.x] = true;
 				++visitedCounter;
 
-				// set each the root of each of the neighbors to backtrack the path
+				// set the root of each of the neighbors to backtrack the path
 				root[next.y][next.x] = node;
 
 				// check if it was the end cell
@@ -443,4 +473,103 @@ void Maze::BFS()
 
 	}
 
+}
+
+void Maze::DFS()
+{
+	// remove colors
+	clearColor();
+
+	// if start and end not selected set them to default
+	if (startMaze == NULL || endMaze == NULL)
+	{
+		startMaze = cells[0][0];
+		endMaze = cells[cellCount.y - 1][cellCount.x - 1];
+	}
+
+	// counter to visited cells 
+	int visitedCounter = 0;
+
+	// bool grid to check visited or not
+	std::vector<std::vector<bool>> visited(this->cellCount.y);
+	for (int y = 0; y < cellCount.y; y++)
+		for (int x = 0; x < cellCount.x; x++)
+			visited[y].push_back(false);
+
+	// DFS Stack
+	std::stack<Vector2i> stack;
+
+	// put the first cell to the stack
+	stack.push(Vector2i(startMaze->getColumn(), startMaze->getRow()));
+
+	Vector2i node;
+	Vector2i neighbor;
+	Vector2i endCell = Vector2i(endMaze->getColumn(), endMaze->getRow());
+	bool end = false;
+
+	while (!stack.empty())
+	{
+		// get top of the stack	
+		node = stack.top();
+
+		// mark it as visited
+		cells[node.y][node.x]->setBGColor(PathColor);
+		visited[node.y][node.x] = true;
+		++visitedCounter;
+
+		// check if it was the end 
+		if (node.x == endCell.x && node.y == endCell.y)
+		{
+			end = true;
+			break;
+		}
+		
+        // get node negibor
+		getUnVisitedNeighbor(node, neighbor, visited);
+
+		if (neighbor.y != -1)
+		{
+			stack.push(neighbor);
+			
+		}
+		else
+		{
+			cells[stack.top().y][stack.top().x]->setBGColor(VisitedCellColor);
+			stack.pop();
+		}
+		window->clear();
+		draw();
+		window->display();
+	}
+	if (end)
+	{
+		// clear console screen
+		system("cls");
+
+		// get the reversed path from the stack
+		std::vector<Vector2i> path;
+
+		while (stack.size() > 0)
+		{
+			path.push_back(stack.top());
+			stack.pop();
+		}
+
+		// reverse the path
+		std::reverse(path.begin(), path.end());
+
+		std::cout << "Visited Cells Count : " << visitedCounter << "\nPath Cell Count : " << path.size() << "\n";
+
+		int counter = 0;
+		for (auto it : path)
+		{
+			std::cout << "(" << it.x << "," << it.y << ")" << " ";
+			if (counter == 10)
+			{
+				std::cout << "\n";
+				counter = 0;
+			}
+			++counter;
+		}
+	}
 }

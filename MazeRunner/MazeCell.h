@@ -25,7 +25,7 @@ public:
 	void setBGColor(Color color);
 	RectangleShape * getBackGround();
 	
-	bool activeWalls[4]{ false,false,false,false };
+	bool activeWalls[4]{ true,true,true,true };
 private:
 	int column = 0;
 	int row = 0;

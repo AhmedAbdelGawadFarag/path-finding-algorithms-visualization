@@ -33,6 +33,7 @@ public:
 	MazeCell* getStart();
 	MazeCell* getEnd();
 	void BFS();
+	void DFS();
 
 private:
 	MazeCell* getCell(Vector2i position);
@@ -42,7 +43,9 @@ private:
 	void fileUpdate();
 	void clear();
 	void getNeighbors(Vector2i current, std::vector<Vector2i>& neighbors);
+	void getUnVisitedNeighbor(Vector2i current, Vector2i &neighbor, const std::vector<std::vector<bool>>& visited);
 	void colorPath(std::vector<Vector2i>& path);
+	void clearColor();
 
 public:
 	bool animation = true;

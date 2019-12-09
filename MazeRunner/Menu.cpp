@@ -458,8 +458,8 @@ void Menu::onAction()
 			solveMenuCurrentIndex = -1;
 			break;
 		case SolveMenuElementName::DFS:
-			//call DFS Function here
 			mainState = false;
+			maze->DFS();
 			break;
 		case SolveMenuElementName::BFS:
 			mainState = false;

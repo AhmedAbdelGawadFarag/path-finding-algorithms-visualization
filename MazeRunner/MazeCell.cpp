@@ -26,12 +26,6 @@ MazeCell::MazeCell(Vector2f position, Vector2f size, int column, int row, float 
 	this->walls[West] = RectangleShape( Vector2f(wallWidth, size.y) );
 	this->walls[West].setPosition( Vector2f(position.x, position.y) );
 	this->walls[West].setFillColor(wallColor);
-
-	this->setActiveWalls(North);
-	this->setActiveWalls(East);
-	this->setActiveWalls(South);
-	this->setActiveWalls(West);
-	
 }
 
 MazeCell::~MazeCell()
