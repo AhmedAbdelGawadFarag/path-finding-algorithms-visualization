@@ -62,7 +62,7 @@ void Maze::fileUpdate()
 		for (int j = 1, CellColm = 0; j < charVector[i].size(); j += 2, CellColm++) {
 			if (charVector[i][j] == '*') {
 				cells[CellRow][CellColm]->getBackGround()->setFillColor(Color::Magenta);
-				setSart(cells[CellRow][CellColm]);
+				setStart(cells[CellRow][CellColm]);
 			}
 			if (charVector[i][j] == 'O') {
 				cells[CellRow][CellColm]->getBackGround()->setFillColor(Color::Cyan);
@@ -182,7 +182,7 @@ MazeCell* Maze::onButtonClick(Vector2i MousePosition)
 				if (MousePosition.x >= UpperLeftPoint.x && MousePosition.x <= UpperRightPoint.x && MousePosition.y >= UpperLeftPoint.y && MousePosition.y <= LowerLeftPoint.y) {
 					//std::cout << "yessss" << std::endl;
 					if (startMaze == NULL) {
-						setSart(cells[y][x]);
+						setStart(cells[y][x]);
 						cells[y][x]->getBackGround()->setFillColor(Color::Magenta);
 					}
 					else {
@@ -344,15 +344,19 @@ void Maze::clearColor()
 			cells[y][x]->setBGColor(backGroundColor);
 }
 
-void Maze::setSart(MazeCell *cell)
+void Maze::setStart(MazeCell *cell)
 {
 	this->startMaze = cell;
+	startCell.x = cell->getColumn();
+	startCell.y = cell->getRow();
 	std::cout<<"start cell row is : "<< startMaze->getRow() <<" start colom is : "<< startMaze->getColumn() << std::endl;
 }
 
 void Maze::SetEnd(MazeCell* cell)
 {
 	this->endMaze = cell;
+	endCell.x = cell->getColumn();
+	endCell.y = cell->getRow();
 	std::cout << "end cell row is : " << endMaze->getRow() << " end colom is : " << endMaze->getColumn() << std::endl;
 
 }
@@ -375,8 +379,8 @@ void Maze::BFS()
 	// if start and end not selected set them to default
 	if (startMaze == NULL || endMaze == NULL)
 	{
-		startMaze = cells[0][0];
-		endMaze = cells[cellCount.y - 1][cellCount.x - 1];
+		setStart(cells[0][0]);
+		SetEnd(cells[cellCount.y - 1][cellCount.x - 1]);
 	}
 	// counter to visited cells 
 	int visitedCounter = 0;
@@ -483,8 +487,8 @@ void Maze::DFS()
 	// if start and end not selected set them to default
 	if (startMaze == NULL || endMaze == NULL)
 	{
-		startMaze = cells[0][0];
-		endMaze = cells[cellCount.y - 1][cellCount.x - 1];
+		setStart(cells[0][0]);
+		SetEnd(cells[cellCount.y - 1][cellCount.x - 1]);
 	}
 
 	// counter to visited cells 
@@ -572,4 +576,105 @@ void Maze::DFS()
 			++counter;
 		}
 	}
+}
+
+void Maze::BestFirst()
+{
+	clearColor();
+	// if start and end not selected set them to default
+	if (startMaze == NULL || endMaze == NULL)
+	{
+		setStart(cells[0][0]);
+		SetEnd(cells[cellCount.y - 1][cellCount.x - 1]);
+	}
+
+	// counter to visited cells  & Examined
+	int visitedCounter = 1, examinedCounter = 1;
+
+	// bool grid to check visited or not
+	std::vector<std::vector<bool>> visited(this->cellCount.y);
+	for (int y = 0; y < cellCount.y; y++)
+		for (int x = 0; x < cellCount.x; x++)
+			visited[y].push_back(false);
+
+	// bool to show the solution
+	std::vector<std::vector<bool>> examined(this->cellCount.y);
+	for (int y = 0; y < cellCount.y; y++)
+		for (int x = 0; x < cellCount.x; x++)
+			examined[y].push_back(false);
+
+	// Best First Search Priority Queue
+	std::priority_queue <Vector2i, std::vector<Vector2i>, compare> pq;
+
+	// put first cell 
+	pq.push(startCell);
+	// make first cell visited
+	visited[pq.top().y][pq.top().x] = true;
+	examined[pq.top().y][pq.top().x] = true;
+
+	bool end = false;
+	std::vector<Vector2i> neighbors;
+
+	do
+	{
+		Vector2i currentCell = pq.top();
+		pq.pop();
+		++examinedCounter;
+		if (currentCell == this->endCell)
+			end = true;
+		else
+		{
+			getNeighbors(currentCell, neighbors);
+			for (auto next : neighbors)
+			{
+				// check if the neighbor wasn't visited
+				if (!visited[next.y][next.x])
+				{
+					// push each not visited neighbor and mark it as visited 
+					visited[next.y][next.x] = true;
+					++visitedCounter;
+					pq.push(next);
+					// set the color of visited cells
+					cells[next.y][next.x]->setBGColor(VisitedCellColor);
+				}
+			}
+			examined[currentCell.y][currentCell.x] = true;
+		}
+		// redraw maze to update colors
+		window->clear();
+		draw();
+		window->display();
+	} while (!pq.empty() && !end);
+
+	if (end)
+	{
+		// clear console screen
+		system("cls");
+
+		
+		std::vector<Vector2i> path;
+
+		// get the path from examined grid
+		for (int y = 0; y < cellCount.y; ++y)
+			for (int x = 0; x < cellCount.x; ++x)
+				if (examined[y][x] == true)
+					path.push_back(Vector2i(x,y));
+
+		std::cout << "Visited Cells Count : " << visitedCounter << "\nPath Cell Count : " << path.size() << "\n";
+
+		int counter = 0;
+		for (auto it : path)
+		{
+			std::cout << "(" << it.x << "," << it.y << ")" << " ";
+			if (counter == 10)
+			{
+				std::cout << "\n";
+				counter = 0;
+			}
+			++counter;
+		}
+		// Color the path
+		colorPath(path);
+	}
+
 }

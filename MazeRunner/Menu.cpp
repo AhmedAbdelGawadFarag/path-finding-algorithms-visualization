@@ -466,7 +466,7 @@ void Menu::onAction()
 			maze->BFS();
 			break;
 		case SolveMenuElementName::BestFirst:
-			//call Best First Search Function here
+			maze->BestFirst();
 			mainState = false;
 			break;
 		case SolveMenuElementName::Dijkstra:
