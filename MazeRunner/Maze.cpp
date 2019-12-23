@@ -733,6 +733,7 @@ void Maze::dijkstra()
 		//cells[node.y][node.x]->setBGColor(Color::Blue);
 		dset.erase(dset.begin());
 		visited[node.y][node.x] = true;
+		++visitedCounter;
 		for (int i = 0; i < 4; i++) {
 			int rr = node.y + dr[i];
 			int cc = node.x + dc[i];
@@ -766,8 +767,6 @@ void Maze::dijkstra()
 				}
 			}
 
-
-
 		}
 		if (!dset.empty()) {
 			pair<int, pair<int, int>> p = *(dset.begin());
@@ -782,14 +781,27 @@ void Maze::dijkstra()
 	Vector2i end;
 	end.x = endMaze->getRow();
 	end.y = endMaze->getColumn();
-	cout << end.y << "endddd" << end.x << endl;
-	//cout << root[4][6].y << "enddd1" << root[4][6].x << endl;
+	std::vector<Vector2i> path;
 
-	//cout << root[end.y][end.x].x << " " << root[end.y][end.x].y << endl;
-	//cout << root[4][5].x << endl;
 	while (end != Vector2i(-1, -1)) {
+		path.push_back(end);
 		cells[end.x][end.y]->setBGColor(Color::Green);
 		end = root[end.x][end.y];
+	}
+
+	std::reverse(path.begin(), path.end());
+	system("cls");
+	cout << "Visited Cells : " << visitedCounter << "\nPath Size : " << path.size() << "\n";
+	int cnt = 1;
+	for (auto x : path)
+	{
+		if (cnt == 10)
+		{
+			cnt = 1;
+			cout << "\n";
+		}
+		cout << "(" << x.y << "," << x.x << ") ";
+		++cnt;
 	}
 	window->clear();
 	draw();
