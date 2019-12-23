@@ -180,21 +180,15 @@ MazeCell* Maze::onButtonClick(Vector2i MousePosition)
 				//std::cout << LowerRightPoint.x << " " << LowerRightPoint.y << std::endl;
 
 				if (MousePosition.x >= UpperLeftPoint.x && MousePosition.x <= UpperRightPoint.x && MousePosition.y >= UpperLeftPoint.y && MousePosition.y <= LowerLeftPoint.y) {
-					//std::cout << "yessss" << std::endl;
-					if (startMaze == NULL) {
+					if (startMaze == NULL) 
 						setStart(cells[y][x]);
-						cells[y][x]->getBackGround()->setFillColor(Color::Magenta);
-					}
-					else {
+					else 
 						SetEnd(cells[y][x]);
-						cells[y][x]->getBackGround()->setFillColor(Color::Cyan);
-					}
+
 					return cells[y][x];
 				}
 				//system("pause");
-
 			}
-
 		}
 	}
 }
@@ -347,6 +341,7 @@ void Maze::clearColor()
 void Maze::setStart(MazeCell *cell)
 {
 	this->startMaze = cell;
+	this->startMaze->setBGColor(Color::Green);
 	startCell.x = cell->getColumn();
 	startCell.y = cell->getRow();
 	std::cout<<"start cell row is : "<< startMaze->getRow() <<" start colom is : "<< startMaze->getColumn() << std::endl;
@@ -355,6 +350,7 @@ void Maze::setStart(MazeCell *cell)
 void Maze::SetEnd(MazeCell* cell)
 {
 	this->endMaze = cell;
+	this->endMaze->setBGColor(Color::Red);
 	endCell.x = cell->getColumn();
 	endCell.y = cell->getRow();
 	std::cout << "end cell row is : " << endMaze->getRow() << " end colom is : " << endMaze->getColumn() << std::endl;
@@ -399,6 +395,7 @@ void Maze::BFS()
 	// make first cell visited
 	visited[queue.front().y][queue.front().x] = true;
 	++visitedCounter;
+	cells[queue.front().y][queue.front().x]->setBGColor(VisitedCellColor);
 
 	// Root grid to find solution at the end
 	std::vector<std::vector<Vector2i>> root(this->cellCount.y);
