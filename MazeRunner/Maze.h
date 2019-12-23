@@ -11,12 +11,15 @@
 #include <algorithm>
 #include <cmath>
 #include <functional>
+#include<utility>
+#include<set>
 
 #define PathColor Color::Cyan
 #define VisitedCellColor Color::Yellow
 #define RouteColor Color::Green
 
 using namespace sf;
+using namespace std;
 class Maze
 {
 public:
@@ -38,6 +41,11 @@ public:
 	void BFS();
 	void DFS();
 	void BestFirst();
+	void dijkstra();
+	void putcell(int r, int c, int rr, int cc, set<pair<int, pair<int, int>>>& dset, int distanceNood, int distanceNeighbour, vector<vector<Vector2i>>& root, vector<vector<int>>& distance);
+	int dr[4] = { -1, +1, 0, 0 };
+	int dc[4] = { 0, 0, +1, -1 };
+
 private:
 	MazeCell* getCell(Vector2i position);
 	MazeCell* randomCell(MazeCell* cell);

@@ -450,6 +450,7 @@ void Menu::onAction()
 			break;
 		case SolveMenuElementName::Dijkstra:
 			//call Dijkstra Function here
+			maze->dijkstra();
 			mainState = false;
 			break;
 		}
