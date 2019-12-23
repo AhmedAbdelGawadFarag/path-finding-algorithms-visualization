@@ -306,7 +306,7 @@ void Maze::clear()
 void Maze::getNeighbors(Vector2i current, std::vector<Vector2i>& neighbors)
 {
 	neighbors.clear();
-	if (!cells[current.y][current.x]->activeWalls[North])
+	if (!cells[current.y][current.x	]->activeWalls[North])
 		neighbors.push_back(Vector2i(current.x, current.y - 1));
 	if (!cells[current.y][current.x]->activeWalls[East])
 		neighbors.push_back(Vector2i(current.x + 1, current.y));
@@ -597,11 +597,17 @@ void Maze::BestFirst()
 		for (int x = 0; x < cellCount.x; x++)
 			visited[y].push_back(false);
 
-	// bool to show the solution
+	// bool to show Examined
 	std::vector<std::vector<bool>> examined(this->cellCount.y);
 	for (int y = 0; y < cellCount.y; y++)
 		for (int x = 0; x < cellCount.x; x++)
 			examined[y].push_back(false);
+
+	// Root path
+	std::vector<std::vector<Vector2i>> root(this->cellCount.y);
+	for (int y = 0; y < cellCount.y; y++)
+		for (int x = 0; x < cellCount.x; x++)
+			root[y].push_back(Vector2i(-1, -1));
 
 	// Best First Search Priority Queue
 	std::priority_queue <Vector2i, std::vector<Vector2i>, compare> pq;
@@ -611,6 +617,7 @@ void Maze::BestFirst()
 	// make first cell visited
 	visited[pq.top().y][pq.top().x] = true;
 	examined[pq.top().y][pq.top().x] = true;
+	cells[pq.top().y][pq.top().x]->setBGColor(VisitedCellColor);
 
 	bool end = false;
 	std::vector<Vector2i> neighbors;
@@ -636,9 +643,11 @@ void Maze::BestFirst()
 					pq.push(next);
 					// set the color of visited cells
 					cells[next.y][next.x]->setBGColor(VisitedCellColor);
+					root[next.y][next.x] = currentCell;
 				}
 			}
 			examined[currentCell.y][currentCell.x] = true;
+			cells[currentCell.y][currentCell.x]->setBGColor(PathColor);
 		}
 		// redraw maze to update colors
 		window->clear();
@@ -654,11 +663,18 @@ void Maze::BestFirst()
 		
 		std::vector<Vector2i> path;
 
-		// get the path from examined grid
-		for (int y = 0; y < cellCount.y; ++y)
-			for (int x = 0; x < cellCount.x; ++x)
-				if (examined[y][x] == true)
-					path.push_back(Vector2i(x,y));
+		Vector2i at = Vector2i(endMaze->getColumn(), endMaze->getRow());
+
+		// get the path from root grid
+		for (at; at.x != -1, at.y != -1; at = root[at.y][at.x])
+			path.push_back(at);
+
+		// reverse the path to ouput it correctly
+		std::reverse(path.begin(), path.end());
+
+		// Color the path
+		for (int i = 0; i < path.size(); i++)
+			cells[path[i].y][path[i].x]->setBGColor(RouteColor);
 
 		std::cout << "Visited Cells Count : " << visitedCounter << "\nPath Cell Count : " << path.size() << "\n";
 
@@ -673,8 +689,6 @@ void Maze::BestFirst()
 			}
 			++counter;
 		}
-		// Color the path
-		colorPath(path);
 	}
 
 }

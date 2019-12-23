@@ -14,6 +14,7 @@
 
 #define PathColor Color::Cyan
 #define VisitedCellColor Color::Yellow
+#define RouteColor Color::Green
 
 using namespace sf;
 class Maze
