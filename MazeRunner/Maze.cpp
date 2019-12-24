@@ -485,9 +485,14 @@ void Maze::DFS()
 	clearColor();
 
 	// if start and end not selected set them to default
-	if (startMaze == NULL || endMaze == NULL)
+	if (startMaze == NULL )
 	{
 		setStart(cells[0][0]);
+		SetEnd(cells[cellCount.y - 1][cellCount.x - 1]);
+	}
+	else if (endMaze == NULL&& startMaze != NULL)
+	{
+
 		SetEnd(cells[cellCount.y - 1][cellCount.x - 1]);
 	}
 
