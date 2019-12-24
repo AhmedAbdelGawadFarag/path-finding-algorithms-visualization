@@ -15,8 +15,8 @@ Menu::Menu(RenderWindow *window,Maze *maze)
 	for (int i = 0; i < SolveMenuMaxElements; i++)
 		solveMenu.push_back(new Text());
 
-	float width = window->getSize().x;
-	float height = window->getSize().y;
+	this->width = window->getSize().x;
+	this->height = window->getSize().y;
 
 	this->font.loadFromFile("arial.ttf");
 	
@@ -24,97 +24,75 @@ Menu::Menu(RenderWindow *window,Maze *maze)
 	mainMenu[0]->setFont(font);
 	mainMenu[0]->setFillColor(Color::White);
 	mainMenu[0]->setString("Generate maze ");
-	mainMenu[0]->setPosition(Vector2f(width * 0.45, height / (MainMenuMaxElements ) ));
 
 	mainMenu[1]->setFont(font);
 	mainMenu[1]->setFillColor(Color::White);
 	mainMenu[1]->setString("     Solve     ");
-	mainMenu[1]->setPosition(Vector2f(width * 0.45, height / (MainMenuMaxElements) + 85));
-
 
 	mainMenu[2]->setFont(font);
 	mainMenu[2]->setFillColor(Color::White);
 	mainMenu[2]->setString(" Load From File");
-	mainMenu[2]->setPosition(Vector2f(width * 0.45, (height / MainMenuMaxElements) + 170));
 
 	mainMenu[3]->setFont(font);
 	mainMenu[3]->setFillColor(Color::White);
 	mainMenu[3]->setString("  Save Maze   ");
-	mainMenu[3]->setPosition(Vector2f(width * 0.45, (height / MainMenuMaxElements) + 255));
 
 	mainMenu[4]->setFont(font);
 	mainMenu[4]->setFillColor(Color::White);
 	mainMenu[4]->setString("   Options    ");
-	mainMenu[4]->setPosition(Vector2f(width * 0.45, (height / MainMenuMaxElements) + 340));
-
 
 	mainMenu[5]->setFont(font);
 	mainMenu[5]->setFillColor(Color::White);
 	mainMenu[5]->setString("     Exit     ");
-	mainMenu[5]->setPosition(Vector2f(width * 0.45, (height / MainMenuMaxElements) + 425));
 
 	//options Menu
 	optionsMenu[0]->setFont(font);
 	optionsMenu[0]->setFillColor(Color::White);
 	optionsMenu[0]->setString("Back");
-	optionsMenu[0]->setPosition(Vector2f(width * 0.45, (height / MainMenuMaxElements) ));
 
 	optionsMenu[1]->setFont(font);
 	optionsMenu[1]->setFillColor(Color::White);
 	optionsMenu[1]->setString("Screen Mode : Default");
-	optionsMenu[1]->setPosition(Vector2f(width * 0.42, (height / MainMenuMaxElements) + 85));
 
 	optionsMenu[2]->setFont(font);
 	optionsMenu[2]->setFillColor(Color::White);
 	optionsMenu[2]->setString("Video Mode : 1366 X 768");
-	optionsMenu[2]->setPosition(Vector2f(width * 0.42, (height / MainMenuMaxElements) + 170));
 
 	optionsMenu[3]->setFont(font);
 	optionsMenu[3]->setFillColor(Color::White);
 	optionsMenu[3]->setString("Row Count : 30");
-	optionsMenu[3]->setPosition(Vector2f(width * 0.43, (height / MainMenuMaxElements) + 255));
 
 
 	optionsMenu[4]->setFont(font);
 	optionsMenu[4]->setFillColor(Color::White);
 	optionsMenu[4]->setString("Column Count : 45");
-	optionsMenu[4]->setPosition(Vector2f(width * 0.43, (height / MainMenuMaxElements) + 340 ));
 
 	optionsMenu[5]->setFont(font);
 	optionsMenu[5]->setFillColor(Color::White);
 	optionsMenu[5]->setString("Animation : ON");
-	optionsMenu[5]->setPosition(Vector2f(width * 0.43, (height / MainMenuMaxElements) + 425 ));
 
 	//Solve Menu
 	solveMenu[0]->setFont(font);
 	solveMenu[0]->setFillColor(Color::White);
 	solveMenu[0]->setString("Back");
-	solveMenu[0]->setPosition(Vector2f(width * 0.45, height / SolveMenuMaxElements + 85));
 
 	solveMenu[1]->setFont(font);
 	solveMenu[1]->setFillColor(Color::White);
 	solveMenu[1]->setString("DFS");
-	solveMenu[1]->setPosition(Vector2f(width * 0.45, height / SolveMenuMaxElements + 170));
 
 	solveMenu[2]->setFont(font);
 	solveMenu[2]->setFillColor(Color::White);
 	solveMenu[2]->setString("BFS");
-	solveMenu[2]->setPosition(Vector2f(width * 0.45, height / SolveMenuMaxElements + 255));
 
 	solveMenu[3]->setFont(font);
 	solveMenu[3]->setFillColor(Color::White);
 	solveMenu[3]->setString("Best First");
-	solveMenu[3]->setPosition(Vector2f(width * 0.45, height / SolveMenuMaxElements + 340));
 
 	solveMenu[4]->setFont(font);
 	solveMenu[4]->setFillColor(Color::White);
 	solveMenu[4]->setString("Dijkstra");
-	solveMenu[4]->setPosition(Vector2f(width * 0.45, height / SolveMenuMaxElements + 425));
 
-	solveMenu[5]->setFont(font);
-	solveMenu[5]->setFillColor(Color::White);
-	solveMenu[5]->setString("A*");
-	solveMenu[5]->setPosition(Vector2f(width * 0.45, height / SolveMenuMaxElements + 510));
+	this->reSize();
 }
 
 Menu::~Menu()
@@ -410,6 +388,7 @@ void Menu::onAction()
 				window->create(videoModes[videoModeIndex], "Maze Runner!", Style::Default);
 			}
 			updateText();
+			this->reSize();
 			break;
 		case OptionsMenuElementName::ScreenRes:
 			if (videoModeSelected)
@@ -422,7 +401,7 @@ void Menu::onAction()
 			}
 			else
 				videoModeSelected = true;
-
+			this->reSize();
 			break;
 		case OptionsMenuElementName::RowCount:
 			rowSelected = !rowSelected;
@@ -471,10 +450,7 @@ void Menu::onAction()
 			break;
 		case SolveMenuElementName::Dijkstra:
 			//call Dijkstra Function here
-			mainState = false;
-			break;
-		case SolveMenuElementName::AStar:
-			//call A* Function here
+			maze->dijkstra();
 			mainState = false;
 			break;
 		}
@@ -488,4 +464,31 @@ void Menu::fileNames()
 	for (const auto& entry : std::filesystem::directory_iterator(std::filesystem::current_path()))
 		if (entry.path().filename().extension() == ".txt")
 			files.push_back(entry.path().filename().generic_string());	
+}
+
+void Menu::reSize()
+{
+	this->width = this->window->getSize().x;
+	this->height = this->window->getSize().y;
+
+	mainMenu[0]->setPosition(Vector2f(width * 0.45, (height / MainMenuMaxElements)       ));
+	mainMenu[1]->setPosition(Vector2f(width * 0.45, (height / MainMenuMaxElements) + 85  ));
+	mainMenu[2]->setPosition(Vector2f(width * 0.45, (height / MainMenuMaxElements) + 170 ));
+	mainMenu[3]->setPosition(Vector2f(width * 0.45, (height / MainMenuMaxElements) + 255 ));
+	mainMenu[4]->setPosition(Vector2f(width * 0.45, (height / MainMenuMaxElements) + 340 ));
+	mainMenu[5]->setPosition(Vector2f(width * 0.45, (height / MainMenuMaxElements) + 425 ));
+
+	optionsMenu[0]->setPosition(Vector2f(width * 0.45, (height / MainMenuMaxElements)      ));
+	optionsMenu[1]->setPosition(Vector2f(width * 0.42, (height / MainMenuMaxElements) + 85 ));
+	optionsMenu[2]->setPosition(Vector2f(width * 0.42, (height / MainMenuMaxElements) + 170 ));
+	optionsMenu[3]->setPosition(Vector2f(width * 0.43, (height / MainMenuMaxElements) + 255 ));
+	optionsMenu[4]->setPosition(Vector2f(width * 0.43, (height / MainMenuMaxElements) + 340 ));
+	optionsMenu[5]->setPosition(Vector2f(width * 0.43, (height / MainMenuMaxElements) + 425 ));
+
+	solveMenu[0]->setPosition(Vector2f(width * 0.45, height / SolveMenuMaxElements + 85 ));
+	solveMenu[1]->setPosition(Vector2f(width * 0.45, height / SolveMenuMaxElements + 170 ));
+	solveMenu[2]->setPosition(Vector2f(width * 0.45, height / SolveMenuMaxElements + 255 ));
+	solveMenu[3]->setPosition(Vector2f(width * 0.45, height / SolveMenuMaxElements + 340 ));
+	solveMenu[4]->setPosition(Vector2f(width * 0.45, height / SolveMenuMaxElements + 425 ));
+
 }

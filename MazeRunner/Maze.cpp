@@ -180,21 +180,15 @@ MazeCell* Maze::onButtonClick(Vector2i MousePosition)
 				//std::cout << LowerRightPoint.x << " " << LowerRightPoint.y << std::endl;
 
 				if (MousePosition.x >= UpperLeftPoint.x && MousePosition.x <= UpperRightPoint.x && MousePosition.y >= UpperLeftPoint.y && MousePosition.y <= LowerLeftPoint.y) {
-					//std::cout << "yessss" << std::endl;
-					if (startMaze == NULL) {
+					if (startMaze == NULL) 
 						setStart(cells[y][x]);
-						cells[y][x]->getBackGround()->setFillColor(Color::Magenta);
-					}
-					else {
+					else 
 						SetEnd(cells[y][x]);
-						cells[y][x]->getBackGround()->setFillColor(Color::Cyan);
-					}
+
 					return cells[y][x];
 				}
 				//system("pause");
-
 			}
-
 		}
 	}
 }
@@ -347,6 +341,7 @@ void Maze::clearColor()
 void Maze::setStart(MazeCell *cell)
 {
 	this->startMaze = cell;
+	this->startMaze->setBGColor(Color::Green);
 	startCell.x = cell->getColumn();
 	startCell.y = cell->getRow();
 	std::cout<<"start cell row is : "<< startMaze->getRow() <<" start colom is : "<< startMaze->getColumn() << std::endl;
@@ -355,6 +350,7 @@ void Maze::setStart(MazeCell *cell)
 void Maze::SetEnd(MazeCell* cell)
 {
 	this->endMaze = cell;
+	this->endMaze->setBGColor(Color::Red);
 	endCell.x = cell->getColumn();
 	endCell.y = cell->getRow();
 	std::cout << "end cell row is : " << endMaze->getRow() << " end colom is : " << endMaze->getColumn() << std::endl;
@@ -399,6 +395,7 @@ void Maze::BFS()
 	// make first cell visited
 	visited[queue.front().y][queue.front().x] = true;
 	++visitedCounter;
+	cells[queue.front().y][queue.front().x]->setBGColor(VisitedCellColor);
 
 	// Root grid to find solution at the end
 	std::vector<std::vector<Vector2i>> root(this->cellCount.y);
@@ -694,6 +691,154 @@ void Maze::BestFirst()
 			}
 			++counter;
 		}
+	}
+
+}
+void Maze::dijkstra()
+{
+
+	clearColor();
+
+	// if start and end not selected set them to default
+	if (startMaze == NULL || endMaze == NULL)
+	{
+		setStart(cells[0][0]);
+		SetEnd(cells[cellCount.y - 1][cellCount.x - 1]);
+	}
+	// counter to visited cells 
+	int visitedCounter = 0;
+	// bool grid to check visited or not
+	std::vector<std::vector<bool>> visited(this->cellCount.y);
+	for (int y = 0; y < cellCount.y; y++)
+		for (int x = 0; x < cellCount.x; x++)
+			visited[y].push_back(false);
+
+	std::vector<std::vector<Vector2i>> root(this->cellCount.y);
+	for (int y = 0; y < cellCount.y; y++)
+		for (int x = 0; x < cellCount.x; x++)
+			root[y].push_back(Vector2i(-1, -1));
+
+	cout << root[4][6].y << "enddd2" << root[4][6].x << endl;
+
+	vector<vector<int>> distance(this->cellCount.y);
+	for (int y = 0; y < cellCount.y; y++)
+		for (int x = 0; x < cellCount.x; x++)
+			distance[y].push_back(-1);
+
+	set<pair<int, pair<int, int>>> dset;
+
+	dset.insert(make_pair(0, make_pair(startMaze->getRow(), startMaze->getColumn())));
+	distance[startMaze->getRow()][startMaze->getColumn()] = 0;
+	Vector2i node;
+	node.y = startMaze->getRow();
+	node.x = startMaze->getColumn();
+
+
+	while (!dset.empty()) {
+		//cells[node.y][node.x]->setBGColor(Color::Blue);
+		dset.erase(dset.begin());
+		visited[node.y][node.x] = true;
+		++visitedCounter;
+		for (int i = 0; i < 4; i++) {
+			int rr = node.y + dr[i];
+			int cc = node.x + dc[i];
+			if (rr < 0 || cc < 0) continue;
+			if (rr > cellCount.y - 1 || cc > cellCount.x - 1) continue;
+			if (visited[rr][cc] == true) continue;
+			if (i == 0) {
+				if (!cells[node.y][node.x]->activeWalls[North]) {
+					putcell(node.y, node.x, rr, cc, dset, distance[node.y][node.x], distance[rr][cc], root, distance);
+					//	cout << rr << "  " << cc << endl;
+				}
+			}
+			else if (i == 1) {
+				if (!cells[node.y][node.x]->activeWalls[South]) {
+					putcell(node.y, node.x, rr, cc, dset, distance[node.y][node.x], distance[rr][cc], root, distance);
+					//cout << rr << " " << cc << endl;
+				}
+			}
+			else if (i == 2) {
+				if (!cells[node.y][node.x]->activeWalls[East]) {
+					putcell(node.y, node.x, rr, cc, dset, distance[node.y][node.x], distance[rr][cc], root, distance);
+					//cout << rr << " " << cc << endl;
+
+				}
+			}
+			else if (i == 3) {
+				if (!cells[node.y][node.x]->activeWalls[West]) {
+					putcell(node.y, node.x, rr, cc, dset, distance[node.y][node.x], distance[rr][cc], root, distance);
+					//	cout << rr << " " << cc << endl;
+
+				}
+			}
+
+		}
+		if (!dset.empty()) {
+			pair<int, pair<int, int>> p = *(dset.begin());
+
+			node.y = p.second.first;
+			node.x = p.second.second;
+
+		}
+
+
+	}
+	Vector2i end;
+	end.x = endMaze->getRow();
+	end.y = endMaze->getColumn();
+	std::vector<Vector2i> path;
+
+	while (end != Vector2i(-1, -1)) {
+		path.push_back(end);
+		cells[end.x][end.y]->setBGColor(Color::Green);
+		end = root[end.x][end.y];
+	}
+
+	std::reverse(path.begin(), path.end());
+	system("cls");
+	cout << "Visited Cells : " << visitedCounter << "\nPath Size : " << path.size() << "\n";
+	int cnt = 1;
+	for (auto x : path)
+	{
+		if (cnt == 10)
+		{
+			cnt = 1;
+			cout << "\n";
+		}
+		cout << "(" << x.y << "," << x.x << ") ";
+		++cnt;
+	}
+	window->clear();
+	draw();
+	window->display();
+
+}
+void Maze::putcell(int r, int c, int rr, int cc, set<pair<int, pair<int, int>>>& dset, int distanceNood, int distanceNeighbour, vector<vector<Vector2i>>& root, vector<vector<int>>& distance)
+{
+
+	if (distanceNeighbour == -1) {
+		distanceNeighbour = distanceNood + 1;
+		dset.insert(make_pair(distanceNeighbour, make_pair(rr, cc)));
+		distance[rr][cc] = distanceNeighbour;
+		root[rr][cc] = Vector2i(r, c);
+		//	cout << root[rr][cc].x<<" root "<< root[rr][cc].y<< endl;
+
+	}
+	else if (abs(distanceNood) + 1 < abs(distanceNeighbour)) {
+		auto f = dset.find(make_pair(distanceNeighbour, make_pair(rr, cc)));
+
+		dset.erase(f);
+
+		distanceNeighbour = distanceNood + 1;
+
+
+		dset.insert(make_pair(distanceNeighbour, make_pair(rr, cc)));
+
+		distance[rr][cc] = distanceNeighbour;
+
+
+		root[rr][cc] = Vector2i(r, c);
+
 	}
 
 }

@@ -9,7 +9,7 @@ using namespace sf;
 
 #define MainMenuMaxElements 6
 #define OptionsMenuMaxElements 6
-#define SolveMenuMaxElements 6
+#define SolveMenuMaxElements 5
 class Menu
 {
 public:
@@ -26,6 +26,7 @@ public:
 	void eventHandler(Event&);
 	void onAction();
 	void fileNames();
+	void reSize();
 private:
 	
 
@@ -56,6 +57,8 @@ private:
 		rowSelected = false,
 		columnSelected = false,
 		filesSelected = false;
+
+	float width, height;
 	
 };
 

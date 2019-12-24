@@ -14,19 +14,15 @@ using namespace sf;
 int main() {
 
 	RenderWindow window(VideoMode(1366, 768), "Maze Runner!", Style::Default);	
-
 	//window.setFramerateLimit(10);
 	
-	Maze maze(&window, 1.5, sf::Vector2i(45, 30), sf::Color::White , sf::Color::Red);
+	Maze maze(&window, 1.5, sf::Vector2i(45, 30), sf::Color::White , sf::Color::Black);
 	Menu menu(&window, &maze);
-	
 
-		 sf::Event event;
+    sf::Event event;
 	menu.open();
 	while (window.isOpen())
 	{	
-		
-
 		while (window.pollEvent(event))
 		{
 			switch (event.type)
@@ -40,17 +36,9 @@ int main() {
 				break;
 
 			}
-			if (Mouse::isButtonPressed(Mouse::Button::Left)) {
-				//cout << Mouse::getPosition(window).x << " " << Mouse::getPosition(window).y << endl;;
-				
-				
+			if (Mouse::isButtonPressed(Mouse::Button::Left)) 
 				maze.onButtonClick(Mouse::getPosition(window));
-				
-				//cout << cnt << endl;
-				
-				
-			}
-
+			
 		}
 		window.clear();
 		if (menu.isOpen())

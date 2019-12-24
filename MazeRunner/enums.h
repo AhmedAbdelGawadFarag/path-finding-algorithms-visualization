@@ -9,7 +9,7 @@ enum class OptionsMenuElementName
 };
 enum class SolveMenuElementName
 {
-	Back, DFS, BFS, BestFirst, Dijkstra, AStar
+	Back, DFS, BFS, BestFirst, Dijkstra
 };
 enum class MenuElement
 {
